@@ -96,7 +96,7 @@
       </div>
     </div>
   </div>
-  <div class="container-fluid px-5">
+  <div class="container-fluid">
     <nav class="navbar navbar-expand-lg sticky-top z-3">
       <div class="container-fluid">
         <a class="navbar-brand active" href="/" title="ĐÈN LED FSL">
@@ -203,7 +203,7 @@
                 <a class="nav-link" href="#">Ngôn ngữ</a>
               </li> -->
             <!-- check if have user show logout else show Login/Register -->
-            <li class="nav-item" style="margin-right: 30px">
+            <!-- <li class="nav-item" style="margin-right: 30px">
               <a
                 class="button nav-link position-relative right-section text-white"
                 href="/cart"
@@ -216,7 +216,7 @@
                   <span class="visually-hidden">unread messages</span>
                 </span></a
               >
-            </li>
+            </li> -->
             <% if (user) { %> <% if (user.role === 'admin' ||user.role === 'mod'
             ) { %>
             <li class="nav-item" style="margin-right: 10px">

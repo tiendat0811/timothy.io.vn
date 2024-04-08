@@ -5,11 +5,18 @@ const session = require('express-session');
 const passport = require('passport');
 const cookieParser = require('cookie-parser');
 const path = require('path');
+const cors = require('cors')
 const expressLayouts = require('express-ejs-layouts');
 require('dotenv').config();
 
 const app = express();
+const corsOptions = {
+    origin: '*',
+    credentials: true,            //access-control-allow-credentials:true
+    optionSuccessStatus: 200,
+}
 
+app.use(cors(corsOptions))
 // Thiết lập EJS làm template engine
 app.set('view engine', 'ejs');
 app.use(expressLayouts);
@@ -71,6 +78,7 @@ app.use('/admin', checkToken, checkRole(['admin', 'mod']), require('./routes/adm
 app.use('/user', require('./routes/user'));
 app.use('/auth', require('./routes/auth'));
 app.use('/post', require('./routes/post'))
+app.use('/mailinh', require('./routes/mailinh'))
 // app.use('/category', require('./routes/category'))
 // app.use('/product', require('./routes/product'))
 // app.use('/cart', require('./routes/cart'))

@@ -31,14 +31,406 @@
           type="text"
           class="form-control"
           placeholder="Nhập mã số nhân viên"
-          id="search"
+          id="msnv"
           aria-describedby="basic-addon1" />
       </div>
+    </div>
+    <div class="col-lg-3">
+      <select
+        class="form-select form-control"
+        aria-label="Thời gian"
+        id="time"></select>
     </div>
     <div class="col-lg-2 text-center">
       <button class="btn btn-primary" onclick="search()">Tra cứu</button>
     </div>
   </div>
+  <div class="mt-3">
+    <!-- tab for show salary or revenue on mobile -->
+    <div class="mb-3 text-center">
+      <h1>Thông tin nhân viên</h1>
+      <div id="info"></div>
+    </div>
+    <div
+      class="btn-group d-lg-none d-flex mb-3"
+      role="group"
+      aria-label="Basic example">
+      <button
+        type="button"
+        class="btn btn-primary active"
+        onclick="tab('revenue')">
+        Doanh thu
+      </button>
+      <button type="button" class="btn btn-primary" onclick="tab('salary')">
+        Lương
+      </button>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-6" id="revenue-table">
+        <h1>Thông tin doanh thu</h1>
+        <p>
+          Lương tạm tính:<span
+            id="tempRevenue"
+            class="text-danger fw-bold"></span>
+        </p>
+        <div id="revenue"></div>
+      </div>
+      <div class="col-lg-6" id="salary-table">
+        <h1>Thông tin lương</h1>
+        <p>
+          Tổng thực lãnh:
+          <span id="tempSalary" class="text-danger fw-bold"></span>
+        </p>
+        <div id="salary"></div>
+      </div>
+    </div>
+  </div>
 </div>
 
-<script></script>
+<script>
+  function tab(type) {
+    if (type === 'salary') {
+      document.getElementById('salary-table').style.display = 'block'
+      document.getElementById('revenue-table').style.display = 'none'
+      // change active
+      document
+        .querySelector('.btn-group button:nth-child(2)')
+        .classList.add('active')
+      document
+        .querySelector('.btn-group button:nth-child(1)')
+        .classList.remove('active')
+    } else {
+      document.getElementById('salary-table').style.display = 'none'
+      document.getElementById('revenue-table').style.display = 'block'
+      // change active
+      document
+        .querySelector('.btn-group button:nth-child(1)')
+        .classList.add('active')
+      document
+        .querySelector('.btn-group button:nth-child(2)')
+        .classList.remove('active')
+    }
+  }
+
+  let dates = []
+  function search() {
+    // set url = ?search=...
+    let msnv = document.getElementById('msnv').value
+    let time = document.getElementById('time').value
+    window.location.href = `?msnv=${msnv}&time=${time}`
+  }
+
+  async function fetchSalary() {
+    const time = document.getElementById('time').value
+    const msnv = document.getElementById('msnv').value
+    const url = `${window.location.origin}/mailinh/salary?msnv=${msnv}&time=${time}`
+    try {
+      const res = await fetch(url)
+      const data = await res.json()
+      const titleMapping = {
+        tongDoanhThu: 'Tổng doanh thu',
+        tiLeChia: 'Phần trăm tỷ lệ chia',
+        pcToTruong: 'PC tổ trưởng',
+        hoTroLaiXeMoi: 'HTLX mới',
+        pcXang: 'PC xăng',
+        thuongDoanhThuDacCach: 'Thưởng DT đặc cách',
+        pcTangCa: 'PC tăng ca',
+        thuongLeTet: 'Thưởng lễ (tết)',
+        thuongKhac: 'Thưởng khác',
+        truyThuTangCa: 'Truy thu tăng ca',
+        tongDoanhThuPhuCap: 'Tổng DT + PC [1]',
+        xang: 'Xăng',
+        bhxh: 'Bảo hiểm XH',
+        bhyt: 'Bảo hiểm Y tế',
+        congDoan: 'Đoàn phí',
+        tongXangBaoHiem: 'Tổng Xăng + BH [2]',
+        httn: 'Hỗ trợ tai nạn',
+        kdtt: 'Kinh doanh tiếp thị',
+        ruaXeHutBui: 'Rửa xe hút bụi',
+        tongPhiThuHo: 'Tổng phí thu hộ [3]',
+        noBaoHiem: 'Nợ bảo hiểm',
+        noDoanhThu: 'Nợ doanh thu',
+        noDienThoai: 'Nợ điện thoại',
+        noXuong: 'Nợ xưởng',
+        noTamUng: 'Nợ tạm ứng',
+        noKyQuy: 'Nợ ký quỹ',
+        noViPham: 'Nợ vi phạm',
+        noTraGopDienThoai: 'Trả góp điện thoại',
+        noCuocWifi: 'Nợ cước Wifi',
+        noAmLuong: 'Nợ âm lương',
+        noTruNDT: 'Trừ nợ NĐT(GX,BH,KĐ)',
+        tongCongNo: 'Tổng công nợ [4]',
+        thuNhapChiuThue: 'Thu nhập chịu thuế [1]-[2]',
+        giamTruGiaCanh: 'Giảm trừ gia cảnh',
+        thueTNCN: 'Thuế TNCN',
+        tongThue: 'Tổng thuế [5]',
+        luongLaiXe: 'Lương [1]-[2+3+4+5]',
+        tamUngLuongKy1: 'Tạm ứng lương kỳ 1',
+        tongThucLinh: 'Thực lĩnh',
+      }
+
+      if (data && data.length > 0) {
+        const salaryTable = document.getElementById('salary')
+
+        // Clear existing table content
+        salaryTable.innerHTML = ''
+
+        // Create table element
+        const table = document.createElement('table')
+        table.classList.add('table', 'table-bordered', 'table-striped')
+
+        // Create table body
+        const tbody = document.createElement('tbody')
+
+        // Extract the salary data from the first object in the array (assuming there's only one result)
+        const salaryData = data[0]
+
+        // Loop through each salary attribute and create a table row for it
+        for (const key in salaryData) {
+          if (salaryData.hasOwnProperty(key) && titleMapping[key]) {
+            const value = salaryData[key]
+
+            // Create table row
+            const row = document.createElement('tr')
+
+            // Create table cell for attribute name (title)
+            const titleCell = document.createElement('td')
+            titleCell.textContent = titleMapping[key]
+
+            // Create table cell for attribute value, formatting currency if needed
+            const valueCell = document.createElement('td')
+            if (typeof value === 'number') {
+              valueCell.textContent = formatCurrency(value)
+            } else {
+              valueCell.textContent = value
+            }
+
+            if (key === 'tongThucLinh') {
+              row.classList.add('fw-bold')
+              titleCell.classList.add('text-white', 'bg-danger')
+              valueCell.classList.add('text-white', 'bg-danger')
+            }
+            // Append cells to row
+            row.appendChild(titleCell)
+            row.appendChild(valueCell)
+
+            // Append row to table body
+            tbody.appendChild(row)
+          }
+        }
+
+        // Append table body to table
+        table.appendChild(tbody)
+
+        // Append table to salary table container
+        salaryTable.appendChild(table)
+
+        // Set total salary
+        document.getElementById('tempSalary').textContent = formatCurrency(
+          salaryData.tongThucLinh,
+        )
+      } else {
+        // Handle case where no data is returned
+        salaryTable.innerHTML = '<p>Chưa có dữ liệu</p>'
+      }
+    } catch (error) {
+      console.log(`[ERROR]-FETCH SALARY: [${url}]`, error)
+    }
+  }
+
+  async function fetchRevenue() {
+    try {
+      const time = document.getElementById('time').value
+      const msnv = document.getElementById('msnv').value
+      const url = `${window.location.origin}/mailinh/revenue?msnv=${msnv}&time=${time}`
+      const res = await fetch(url)
+      const data = await res.json()
+      let total = 0
+      if (data && data.length > 0) {
+        const revenueTable = document.getElementById('revenue')
+
+        // Clear existing table content
+        revenueTable.innerHTML = ''
+
+        // Create table element
+        const table = document.createElement('table')
+        table.classList.add('table', 'table-bordered', 'table-striped')
+        table.style.border = '1px solid #dee2e6'
+        // Create table header
+        const thead = document.createElement('thead')
+        const headerRow = document.createElement('tr')
+
+        thead.appendChild(headerRow)
+        table.appendChild(thead)
+
+        // Create table body
+        const tbody = document.createElement('tbody')
+        const formattedTitles = [
+          'Doanh thu',
+          '% ăn chia',
+          'PC thâm niên',
+          'Xăng',
+          'HTKM LX mới',
+          'Rửa xe',
+          'KDTT',
+          'HTTN',
+          'MCC dư',
+          'Còn lại LX',
+          '% Xe TQ',
+          'Phí QLTB',
+          'Còn lại NĐT',
+        ]
+        data.forEach((entry) => {
+          const entryRow = document.createElement('tr')
+          entry.DetailModels.forEach((detail) => {
+            const titleCell = document.createElement('td')
+
+            titleCell.textContent = detail.title
+
+            const dataCell = document.createElement('td')
+            dataCell.textContent = detail.value
+            if (formattedTitles.includes(detail.title)) {
+              // Check if title needs formatting
+              dataCell.textContent = formatCurrency(detail.value)
+            }
+
+            if (detail.title === 'Còn lại LX') {
+              total += Number(detail.value)
+              titleCell.classList.add('text-danger', 'fw-bold')
+              dataCell.classList.add('text-danger', 'fw-bold')
+            }
+
+            const rowContainer = document.createElement('div')
+            rowContainer.classList.add('row', 'g-0')
+            const titleCol = document.createElement('div')
+            titleCol.classList.add('col-6')
+            titleCol.appendChild(titleCell)
+
+            const dataCol = document.createElement('div')
+            dataCol.classList.add('col-6')
+            dataCol.appendChild(dataCell)
+
+            rowContainer.appendChild(titleCol)
+            rowContainer.appendChild(dataCol)
+
+            entryRow.appendChild(rowContainer)
+          })
+          tbody.appendChild(entryRow)
+        })
+
+        // Append table body to the table element
+        table.appendChild(tbody)
+
+        // Append table element to the revenue table container
+        revenueTable.appendChild(table)
+
+        // Set total revenue
+        document.getElementById('tempRevenue').textContent = ` ${formatCurrency(
+          total,
+        )}`
+      } else {
+        // Handle case where no data is returned
+        revenueTable.innerHTML = '<p>Chưa có dữ liệu</p>'
+      }
+    } catch (error) {
+      console.table('[ERROR]-FETCH REVENUE:', error)
+    }
+  }
+
+  async function fetchInfoStaff() {
+    const msnv = document.getElementById('msnv').value
+    const url = `${window.location.origin}/mailinh/infostaff?msnv=${msnv}`
+    try {
+      const res = await fetch(url)
+      const data = await res.json()
+      const titleMapping = {
+        MSNV: 'MSNV',
+        HoTen: 'Họ tên',
+        DienThoai: 'SĐT',
+        ChiNhanh: 'Chi nhánh',
+        Doi: 'Đội',
+        BaiGiaoCa: 'Bãi giao ca',
+      }
+      if (data && data.length > 0) {
+        const info = document.getElementById('info')
+        const infoStaff = data[0]
+        const table = document.createElement('table')
+        table.classList.add('table', 'table-bordered', 'table-striped')
+        const tbody = document.createElement('tbody')
+        for (const key in infoStaff) {
+          if (infoStaff.hasOwnProperty(key) && titleMapping[key]) {
+            const value = infoStaff[key]
+            const row = document.createElement('tr')
+            const titleCell = document.createElement('td')
+            titleCell.textContent = titleMapping[key]
+            const valueCell = document.createElement('td')
+            valueCell.textContent = value
+            row.appendChild(titleCell)
+            row.appendChild(valueCell)
+            tbody.appendChild(row)
+          }
+        }
+        table.appendChild(tbody)
+        info.appendChild(table)
+      } else {
+        info.innerHTML = '<p>Chưa có dữ liệu</p>'
+      }
+    } catch (error) {
+      console.log(`[ERROR]-FETCH INFO STAFF: [${url}]`, error)
+    }
+  }
+
+  function formatCurrency(value) {
+    return new Intl.NumberFormat('vi-VN', {
+      style: 'currency',
+      currency: 'VND',
+    }).format(value)
+  }
+
+  function init() {
+    // check if search is not empty
+    let url = new URLSearchParams(window.location.search)
+    let msnv = url.get('msnv')
+    if (msnv) {
+      document.getElementById('msnv').value = msnv
+
+      // createDate
+      const currentDate = new Date()
+      const result = []
+
+      for (let i = 0; i < 72; i++) {
+        const date = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth() - i,
+          1,
+        )
+        const dateString = `${('0' + (date.getMonth() + 1)).slice(
+          -2,
+        )}-${date.getFullYear()}`
+        result.push(dateString)
+      }
+      dates = result
+      // create options
+      const time = document.getElementById('time')
+      dates.forEach((date) => {
+        const option = document.createElement('option')
+        option.value = date
+        option.text = date
+        time.appendChild(option)
+      })
+      // set selected
+      let timeValue = url.get('time')
+      if (timeValue) {
+        document.getElementById('time').value = timeValue
+      }
+    }
+
+    // fetch data
+    fetchSalary()
+    fetchRevenue()
+    fetchInfoStaff()
+  }
+
+  init()
+</script>
