@@ -1,6 +1,6 @@
 version: '2.19.1'
 services:
-  paullight:
+  timothy-io-vn:
     build: 
       context: .
       dockerfile: Dockerfile
