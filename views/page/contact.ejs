@@ -1,0 +1,102 @@
+<style>
+  .page-contact .map-wrapper {
+    justify-content: center;
+    display: flex;
+    padding-bottom: 20px;
+  }
+
+  .list-contact {
+    margin-top: 20px;
+    padding: 20px;
+  }
+
+  .list-contact p {
+    margin-bottom: 10px;
+  }
+
+  .list-contact p i {
+    margin-right: 10px;
+  }
+
+  .list-contact p i.fa {
+    color: #003c96;
+  }
+
+  .list-contact p,
+  h1,
+  h2 {
+    text-align: center;
+  }
+
+  .list-contact h1 {
+    font-size: 24px;
+    font-family: 'Roboto', sans-serif;
+  }
+  .list-contact h2 {
+    font-size: 20px;
+    font-family: 'Roboto', sans-serif;
+  }
+</style>
+<div class="container">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+      <li class="breadcrumb-item active">Liên hệ</li>
+    </ol>
+  </nav>
+  <div class="contact-text bg-secondary-subtle rounded-4 page-contact mb-3">
+    <div class="">
+      <div class="list-contact">
+        <h1>MAI LINH DRIVER</h1>
+        <h2>TRA CỨU DOANH SỐ CHO LÁI XE</h2>
+        <p>
+          <i class="fa fa-map-marker mr5" aria-hidden="true"></i><%=
+          setting?.contact.address %>
+        </p>
+
+        <p>
+          <i class="fa fa-phone mr5" aria-hidden="true"></i> Tổng đài Taxi toàn
+          quốc: 1055 | Tổng đài chăm sóc khách hàng toàn quốc: 1900.6789
+        </p>
+
+        <p>
+          <i class="fa fa-envelope" aria-hidden="true"></i> <%=
+          setting?.contact.email %>
+        </p>
+      </div>
+    </div>
+    <div class="map-wrapper p-0">
+      <div
+        style="
+          max-width: 100%;
+          overflow: hidden;
+          color: red;
+          width: 100%;
+          height: 400px;
+        ">
+        <div
+          id="google-maps-display"
+          style="height: 100%; width: 100%; max-width: 100%">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.266354991248!2d106.69870677583856!3d10.790900358924883!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3175291fc9012c5d%3A0xaac3a1054935b81a!2zVOG6rXAgxJFvw6BuIE1haSBMaW5o!5e0!3m2!1sen!2s!4v1712567952144!5m2!1sen!2s"
+            style="height: 100%; width: 100%; border-radius: 10px"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+        <a
+          class="our-googlemap-code"
+          href="https://www.bootstrapskins.com/themes"
+          id="authmaps-data"
+          >premium bootstrap themes</a
+        ><style>
+          #google-maps-display img {
+            max-height: none;
+            max-width: none !important;
+            background: none !important;
+          }
+        </style>
+      </div>
+    </div>
+  </div>
+</div>

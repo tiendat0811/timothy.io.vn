@@ -1,0 +1,23 @@
+<style>
+  .page-faq {
+    margin-top: 20px;
+    padding: 20px;
+  }
+</style>
+<div class="container" class="page-faq">
+  <h1>Câu hỏi thường gặp</h1>
+  <div id="page-faq"></div>
+</div>
+
+<script>
+  let quillFaq = new Quill('#page-faq', {
+    readOnly: true,
+  })
+
+  //call api
+  fetch(`${window.location.origin}/post/index?limit=1&page=1&category=faq`)
+    .then((response) => response.json())
+    .then((data) => {
+      quillFaq.setContents(data.data.data[0]?.description)
+    })
+</script>

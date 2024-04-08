@@ -1,0 +1,44 @@
+<style>
+  .home-section .category p {
+    /* 1 line */
+    white-space: nowrap;
+  }
+  .home-section .category .list-group a {
+    font-size: 1rem;
+    white-space: nowrap;
+    /* upper case */
+    background-color: #fdede3;
+    text-transform: uppercase;
+  }
+  .home-section .category .list-group a:hover {
+    background-color: #ffbe98;
+  }
+  .home-section .category .list-group a.active {
+    background-color: #fe5e00;
+    border-color: #fdede3;
+  }
+</style>
+<div class="container home-section" id="home-section">
+  <div
+    class="row justify-content-center align-items-center py-2 rounded-3 gap-1"
+    style="background-color: #00a651">
+    <div class="col-lg-4">
+      <div class="input-group">
+        <span class="input-group-text">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </span>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Nhập mã số nhân viên"
+          id="search"
+          aria-describedby="basic-addon1" />
+      </div>
+    </div>
+    <div class="col-lg-2 text-center">
+      <button class="btn btn-primary" onclick="search()">Tra cứu</button>
+    </div>
+  </div>
+</div>
+
+<script></script>

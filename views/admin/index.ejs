@@ -1,0 +1,172 @@
+<style>
+  .dashboard-nav-item.active {
+    transform: scale(1.1);
+    background-color: #ff8b48;
+  }
+
+  .dashboard-nav-dropdown-item{
+    padding-left: 1rem;
+  }
+  .dashboard-nav-item:hover,
+  .dashboard-nav-dropdown-item:hover {
+    transform: scale(1.1);
+    background-color: #ffbe98;
+  }
+
+  .dashboard-nav,
+  .dashboard-toolbar {
+    background-color: #00a651;
+    border-width: 0;
+  }
+</style>
+<div class="dashboard">
+  <div class="dashboard-nav">
+    <div class="header">
+      <a href="#" class="menu-toggle"><i class="fas fa-bars"></i></a>
+    </div>
+    <nav class="dashboard-nav-list">
+      
+      <% if (user.role === 'admin') { %>
+      <a
+        href="/admin"
+        class="dashboard-nav-item <%= currentPath === '/admin' ? 'active' : '' %>"
+        ><i class="fas fa-tachometer-alt"></i> Tổng quan
+      </a>
+      <a
+        href="/admin/post"
+        class="dashboard-nav-item <%= currentPath === '/admin/post' ? 'active' : '' %>"
+        ><i class="fa-solid fa-newspaper"></i> Bài viết
+      </a>
+      <a
+        href="/admin/category"
+        class="dashboard-nav-item <%= currentPath === '/admin/category' ? 'active' : '' %>"
+        ><i class="fa-solid fa-bars"></i>Danh mục
+      </a>
+      <a
+        href="/admin/product"
+        class="dashboard-nav-item <%= currentPath === '/admin/product' ? 'active' : '' %>"
+        ><i class="fa-solid fa-lightbulb"></i></i> Sản phẩm
+      </a>
+      <a
+        href="/admin/order"
+        class="dashboard-nav-item <%= currentPath === '/admin/order' ? 'active' : '' %>"
+        ><i class="fa-solid fa-box"></i></i> Đơn hàng
+      </a>
+      
+      <div
+        class="dashboard-nav-dropdown <%= currentPath.startsWith('/admin/policy') ? 'active show' : '' %>">
+        <a class="dashboard-nav-item dashboard-nav-dropdown-toggle">
+          <i class="fa-solid fa-book"></i>Chính sách
+        </a>
+        <div class="dashboard-nav-dropdown-menu">
+          <a
+            href="/admin/policy/payment"
+            class="dashboard-nav-dropdown-item <%= currentPath === '/admin/policy/payment' ? 'active' : '' %>"
+            >- Phương thức thanh toán</a
+          >
+          <a
+            href="/admin/policy/shipping"
+            class="dashboard-nav-dropdown-item <%= currentPath === '/admin/policy/shipping' ? 'active' : '' %>"
+            >- Phương thức vận chuyển
+            </a
+          >
+          <a
+            href="/admin/policy/warranty"
+            class="dashboard-nav-dropdown-item <%= currentPath === '/admin/policy/warranty' ? 'active' : '' %>"
+            >- Chính sách bảo hành</a
+          >
+          <a href="/admin/policy/returning"
+            class="dashboard-nav-dropdown-item <%= currentPath === '/admin/policy/return' ? 'active' : '' %>"
+            >- Chính sách đổi trả</a
+          >
+          <a href="/admin/policy/security"
+            class="dashboard-nav-dropdown-item <%= currentPath === '/admin/policy/security' ? 'active' : '' %>"
+            >- Chính sách bảo mật</a
+          >
+        </div>
+      </div>
+      <div
+        class="dashboard-nav-dropdown <%= currentPath.startsWith('/admin/setting') ? 'active show' : '' %>">
+        <a class="dashboard-nav-item dashboard-nav-dropdown-toggle">
+          <i class="fas fa-cogs"></i> Cài đặt
+        </a>
+        <div class="dashboard-nav-dropdown-menu">
+          <a
+            href="/admin/setting"
+            class="dashboard-nav-dropdown-item <%= currentPath === '/admin/setting' ? 'active' : '' %>"
+            >- Cài đặt chung</a
+          >
+          <a
+            href="/admin/setting/about"
+            class="dashboard-nav-dropdown-item <%= currentPath === '/admin/setting/about' ? 'active' : '' %>"
+            >- Giới thiệu</a
+          >
+          <a
+            href="/admin/setting/banking"
+            class="dashboard-nav-dropdown-item <%= currentPath === '/admin/setting/banking' ? 'active' : '' %>"
+            >- Ngân hàng</a
+          >
+          <a
+            href="/admin/setting/slider"
+            class="dashboard-nav-dropdown-item <%= currentPath === '/admin/setting/slider' ? 'active' : '' %>"
+            >- Banner</a
+          >
+        </div>
+      </div>
+      <% } %>
+    </nav>
+  </div>
+  <div class="dashboard-app">
+    <div class="dashboard-toolbar">
+      <a href="#!" class="menu-toggle"><i class="fas fa-bars"></i></a>
+    </div>
+    <div class="dashboard-content">
+      <div class="container-fluid">
+        <!-- render here, check url to include file-->
+        <%- include(page) %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function (event) {
+    const component = document.querySelector('.dashboard-nav')
+    const componentTop = component.offsetTop
+    const windowHeight = window.innerHeight
+    const distanceToBottom = windowHeight - componentTop
+    // set  height for component if is larger than window height
+    if (component.offsetHeight > windowHeight) {
+      component.style.height = windowHeight + 'px'
+      return
+    }
+  })
+
+  const mobileScreen = window.matchMedia('(max-width: 990px )')
+  $(document).ready(function () {
+    $('.dashboard-nav-dropdown-toggle').click(function () {
+      $(this)
+        .closest('.dashboard-nav-dropdown')
+        .toggleClass('show')
+        .find('.dashboard-nav-dropdown')
+        .removeClass('show')
+      $(this).parent().siblings().removeClass('show')
+    })
+    $('.menu-toggle').click(function () {
+      if (mobileScreen.matches) {
+        $('.dashboard-nav').toggleClass('mobile-show')
+      } else {
+        $('.dashboard').toggleClass('dashboard-compact')
+      }
+    })
+  })
+</script>
+<% if (user.role === 'admin') { %>
+<script>
+  document.addEventListener('DOMContentLoaded', function (event) {
+    async function getNotification() {
+      const res = await fetch('/admin/settings')
+    }
+  })
+</script>
+<% } %>

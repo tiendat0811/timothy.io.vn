@@ -1,0 +1,71 @@
+<style>
+  .tool-banking {
+    padding: 0;
+  }
+  .tool-banking img {
+    width: 200px;
+    height: 100px;
+    object-fit: cover;
+  }
+
+  @media (max-width: 500px) {
+    .tool-banking img {
+      width: 40px;
+      height: 40px;
+      align-self: center;
+      border-radius: 50%;
+    }
+  }
+
+  .tool-banking .description {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 5px;
+    margin-left: 10px;
+  }
+  .tool-banking .description .text,
+  .content {
+    font-size: 16px;
+  }
+</style>
+
+<div class="container">
+  <ul class="tool-banking"></ul>
+</div>
+
+<script>
+  var setting = <%- JSON.stringify(setting) %>
+  $(document).ready(function () {
+    renderBanking()
+  })
+
+  function renderBanking() {
+    let html = ''
+    setting?.banking.forEach((item, index) => {
+      html += `
+        <li>
+          <div class="d-flex">
+            <img src="${item.image}" alt="" />
+            <div class="description">
+              <div>
+                <div class="text">Ngân hàng</div>
+                <div class="text">Tên tài khoản</div>
+                <div class="text">Số tài khoản</div>
+                <div class="text">Chi nhánh </div>
+              </div>
+              <div>
+                <div class="content">${item.name}</div>
+                <div class="content">${item.fullname}</div>
+                <div class="content">${item.number}</div>
+                <div class="content">${item.locale}</div>
+              </div>
+            </div>
+          </div>
+          <hr />
+        </li>
+      `
+    })
+
+    $('ul.tool-banking').append(html)
+  }
+</script>

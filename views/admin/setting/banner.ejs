@@ -1,0 +1,312 @@
+<style>
+  .setting-banner .banner-image {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+  }
+
+  #banner img {
+    width: 200px;
+    height: 100px;
+    object-fit: cover;
+  }
+</style>
+<div class="container-fluid setting-banner">
+  <div class="d-flex justify-content-between">
+    <h4>Quản lý banner</h4>
+    <div>
+      <div
+        class="btn btn-primary mb-1"
+        data-bs-toggle="modal"
+        data-bs-target="#createbanner">
+        <i class="fa-sharp fa-solid fa-plus pe-1"></i>
+        Thêm mới
+      </div>
+    </div>
+  </div>
+  <table class="table" id="banner">
+    <thead>
+      <tr>
+        <th scope="col">TT</th>
+        <th scope="col">Ảnh</th>
+        <th scope="col">Tên</th>
+        <th scope="col">Đường dẫn</th>
+        <th scope="col">Vị trí</th>
+        <th scope="col">Thao tác</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  <!-- modal create -->
+  <div
+    class="modal fade"
+    id="createbanner"
+    tabindex="-1"
+    aria-labelledby="createbanner"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header d-flex justify-content-between">
+          <h1 class="modal-title fs-5" id="createbanner">Tạo banner mới</h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="banner-image" class="form-label">Ảnh</label>
+              <input
+                type="file"
+                class="form-control"
+                id="banner-image"
+                accept="image/png, image/jpg, image/jpeg" />
+            </div>
+            <div class="mb-3">
+              <label for="banner-name" class="form-label">Tên banner</label>
+              <input type="text" class="form-control" id="banner-name" />
+            </div>
+            <div class="mb-3">
+              <label for="banner-position" class="form-label">Vị trí</label>
+              <input
+                type="number"
+                class="form-control"
+                id="banner-position"
+                value="0" />
+            </div>
+            <div class="mb-3">
+              <label for="banner-link" class="form-label">Đường dẫn</label>
+              <input type="text" class="form-control" id="banner-link" />
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal">
+            Huỷ
+          </button>
+          <button type="button" class="btn btn-primary" id="createbanner">
+            Xác nhận
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- modal edit -->
+  <div
+    class="modal fade"
+    id="editbanner"
+    tabindex="-1"
+    aria-labelledby="editbanner"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header d-flex justify-content-between">
+          <h1 class="modal-title fs-5" id="editbanner">
+            Cập nhật thông tin chuyển khoản
+          </h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="banner-image" class="form-label">Ảnh</label>
+              <input
+                type="file"
+                class="form-control"
+                id="banner-image"
+                accept="image/png, image/jpg, image/jpeg" />
+            </div>
+            <div class="mb-3">
+              <label for="banner-name" class="form-label">Tên banner</label>
+              <input type="text" class="form-control" id="banner-name" />
+            </div>
+            <div class="mb-3">
+              <label for="banner-position" class="form-label">Vị trí</label>
+              <input
+                type="number"
+                class="form-control"
+                id="banner-position"
+                value="0" />
+            </div>
+            <div class="mb-3">
+              <label for="banner-link" class="form-label">Đường dẫn</label>
+              <input type="text" class="form-control" id="banner-link" />
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal">
+            Huỷ
+          </button>
+          <button type="button" class="btn btn-primary" onclick="editbanner()">
+            Cập nhật
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- modal delete -->
+  <div
+    class="modal fade"
+    id="deletebanner"
+    tabindex="-1"
+    aria-labelledby="deletebanner"
+    aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="deletebanner">Cảnh báo</h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Bạn chắc chắn muốn xóa thông tin ngân hàng này?
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal">
+            Huỷ
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            onclick="confirmDeletebanner()">
+            Xác nhận
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  var setting = <%- JSON.stringify(setting) %>
+  let currentbanner = null
+  $(document).ready(function () {
+    renderbanner()
+
+    $('button#createbanner').on('click', async function () {
+      var body = {
+        name: $('#banner-name').val(),
+        position: $('#banner-position').val(),
+        link: $('#banner-link').val(),
+      }
+      var files = $('#banner-image').prop('files')
+      var url = files.length > 0 ? await uploadImage(files, 'banner') : null
+      if (url != null) {
+        body.image = url
+      }
+      updatebanner({
+        banner: [...setting?.banner, body],
+      })
+    })
+  })
+
+  function selectEditbanner(index, id) {
+    const banner = setting?.banner[index]
+    currentbanner = id
+    $('#editbanner #banner-name').val(banner.name)
+    $('#editbanner #banner-position').val(banner.position)
+    $('#editbanner #banner-link').val(banner.link)
+    $('#editbanner').modal('show')
+  }
+  async function editbanner() {
+    let body = {
+      name: $('#editbanner #banner-name').val(),
+      position: $('#editbanner #banner-position').val(),
+      link: $('#editbanner #banner-link').val(),
+    }
+    var files = $('#editbanner #banner-image').prop('files')
+    var url = files.length > 0 ? await uploadImage(files, 'banner') : null
+    if (url != null) {
+      body.image = url
+    }
+
+    let newbanner = setting?.banner
+    newbanner.forEach((banner, index) => {
+      if (banner._id == currentbanner) {
+        newbanner[index] = { ...newbanner[index], ...body }
+      }
+    })
+    updatebanner({
+      banner: newbanner,
+    })
+  }
+
+  function deletebanner(id) {
+    currentbanner = id
+    $('#deletebanner').modal('show')
+  }
+
+  function confirmDeletebanner() {
+    let newbanner = setting?.banner.filter(
+      (banner) => banner._id != currentbanner,
+    )
+    updatebanner({
+      banner: newbanner ,
+    })
+  }
+
+  function renderbanner() {
+    let html = ''
+    setting?.banner
+      .sort((a, b) => a.position - b.position)
+      .forEach((item, index) => {
+        html += `
+            <tr>
+            <th scope="row">${index + 1}</th>
+            <td><img src="${item.image}" alt="" /></>
+            <td>${item.name}</td>
+            <td>${item.link}</td>
+            <td>${item.position}</td>
+            <td>
+                <div class="btn btn-primary" onclick="selectEditbanner('${index}', '${
+          item._id
+        }')" >Sửa</div>
+                <div class="btn btn-danger" onclick="deletebanner('${
+                  item._id
+                }')">Xóa</div>
+            </td>
+            </tr>
+        `
+      })
+
+    $('tbody').append(html)
+  }
+
+  function updatebanner(body) {
+    $.ajax({
+      url: '/admin/setting',
+      type: 'PATCH',
+      contentType: 'application/json',
+      data: JSON.stringify(body),
+      success: function (data) {
+        if (data.status == 'ok') {
+          currentbanner = null
+          $('#createbanner').modal('hide')
+          window.location.reload()
+        } else {
+          alert('Thao tác thất bại')
+        }
+      },
+    })
+  }
+</script>

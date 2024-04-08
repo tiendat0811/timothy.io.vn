@@ -1,0 +1,80 @@
+<!-- detail post -->
+<style>
+  .post-detail {
+    align-items: center;
+    justify-content: center;
+  }
+
+  .post-detail-content p,
+  li {
+    font-size: 18px;
+  }
+
+  .post-detail-content a {
+    color: blue;
+  }
+
+  .post-detail-title {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .post-detail-title h1 {
+    font-size: 28px;
+  }
+
+  .post-detail-date {
+    margin-bottom: 20px;
+    font-style: italic;
+  }
+
+  article img {
+    width: auto;
+    height: auto;
+  }
+</style>
+<div class="container">
+  <div class="row" class="post-detail">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+      <article itemtype="https://schema.org/Article" itemscope>
+        <div class="post-detail-title">
+          <h1 itemprop="headline"><%= post.title %></h1>
+        </div>
+        <% const date = new Date(post.createdAt); const isoDate =
+        date.toISOString(); %>
+        <div class="post-detail-date">
+          <p itemprop="datePublished" datetime="<%= isoDate %>">
+            Ngày đăng: <%= post.createdDate %>
+          </p>
+          <p
+            class="d-none"
+            itemprop="author"
+            itemscope
+            itemtype="http://schema.org/Person">
+            Tác giả: <span itemprop="name">Phạm Tiến Đạt</span>
+          </p>
+        </div>
+        <div
+          class="post-detail-content"
+          id="post-detail-content"
+          itemprop="description"></div>
+      </article>
+    </div>
+    <div class="col-md-2"></div>
+  </div>
+</div>
+
+<script>
+  let description = new Quill('#post-detail-content', {
+    readOnly: true,
+  });
+
+  var content = <%- JSON.stringify(post.description) %>
+  description.setContents(content);
+  const images = document.querySelectorAll('#post-detail-content img');
+  console.log(images)
+  images.forEach(image => {
+    image.setAttribute('itemprop', 'image');
+  });
+</script>

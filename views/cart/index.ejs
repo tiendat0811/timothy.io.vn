@@ -1,0 +1,545 @@
+<style>
+  .cart-container {
+    margin-top: 20px;
+  }
+  .cart-container a {
+    cursor: pointer;
+  }
+  .cart-container h1 {
+    font-size: 30px;
+    font-weight: 700;
+  }
+  .cart-container .remove-cart {
+    cursor: pointer;
+  }
+
+  .cart-container .remove-cart:hover {
+    color: #00a651;
+  }
+
+  .cart-container img {
+    width: 100px;
+    height: 100px;
+    border: 1px solid #ddd;
+    object-fit: contain;
+  }
+
+  .cart-mobile img {
+    width: 100px;
+    height: 100px;
+    border: 1px solid #ddd;
+    object-fit: contain;
+    background-color: white;
+  }
+
+  .cart-container .cart-body input[type='number'] {
+    width: 60px;
+  }
+
+  .cart-mobile input[type='number'] {
+    width: 60px;
+  }
+
+  .cart-container .btn-buy {
+    background-color: #00a651;
+    color: #fff;
+    border: none;
+    border-radius: 0;
+    padding: 10px 0;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .cart-mobile {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2000000001;
+    background-color: white;
+  }
+  .price-details {
+    display: none;
+    transform: translateY(100%);
+    transition: transform 0.3s ease-in-out;
+  }
+
+  /* CSS for the gray background overlay */
+  .overlay {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent gray */
+    z-index: 100; /* Make sure it's above other content */
+  }
+
+  .modal-backdrop {
+    z-index: 2000000001;
+  }
+</style>
+<div class="container cart-container">
+  <div
+    class="modal fade"
+    id="removeCartModal"
+    tabindex="-1"
+    aria-labelledby="removeCartModalLabel"
+    aria-hidden="true"
+    style="z-index: 2000000002">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="removeCartModalLabel">Cảnh báo</h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Bạn có chắc chắn muốn xoá tất cả sản phẩm trong giỏ hàng?</p>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal">
+            Huỷ
+          </button>
+          <button type="button" class="btn btn-primary" onclick="deleteAll()">
+            Xác nhận
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="modal fade"
+    id="removeOneModal"
+    tabindex="-1"
+    aria-labelledby="removeOneModalLabel"
+    aria-hidden="true"
+    style="z-index: 2000000002">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="removeOneModalLabel">Cảnh báo</h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Bạn có chắc chắn muốn xoá sản phẩm này?</p>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+            onclick="cancelDeleteOne()">
+            Huỷ
+          </button>
+          <button type="button" class="btn btn-primary" onclick="deleteOne()">
+            Xác nhận
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- web -->
+  <div class="d-none d-lg-block">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+        <li class="breadcrumb-item active">Giỏ hàng</li>
+      </ol>
+    </nav>
+    <div class="row">
+      <div class="col-md-8">
+        <div class="cart-header d-flex justify-content-between">
+          <h1>Giỏ hàng</h1>
+          <a
+            class="remove-cart"
+            data-bs-toggle="modal"
+            data-bs-target="#removeCartModal"
+            ><i class="fa-solid fa-trash me-1"></i>Xoá tất cả</a
+          >
+        </div>
+        <div class="cart-body">
+          <table class="table border border-1 rounded p-2">
+            <thead>
+              <tr>
+                <th scope="col">
+                  <input
+                    class="form-check-input selectAll"
+                    type="checkbox"
+                    checked />
+                </th>
+                <th scope="col" class="w-100">Thông tin</th>
+                <th scope="col" style="white-space: nowrap">Đơn giá</th>
+                <th scope="col" style="white-space: nowrap">Số lượng</th>
+                <th scope="col" style="white-space: nowrap">Thành tiền</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="d-flex flex-column pb-3 justify-content-start h-100">
+          <div class="border border-1 rounded p-2">
+            <h1>Thanh toán</h1>
+            <div class="d-flex justify-content-between">
+              <p class="me-2">Tạm tính</p>
+              <p class="fw-bold total">Chưa có</p>
+            </div>
+            <div class="d-flex justify-content-between">
+              <p class="me-2">Phí vận chuyển</p>
+              <p class="fw-bold">Chưa có</p>
+            </div>
+            <div class="d-flex justify-content-between">
+              <p class="me-2">Giảm giá</p>
+              <p class="fw-bold">Chưa có</p>
+            </div>
+            <div class="d-flex justify-content-between">
+              <p class="me-2">Thành tiền</p>
+              <p class="fw-bold total-all">Chưa có</p>
+            </div>
+          </div>
+          <div class="border border-1 rounded p-2 mt-3 btn-buy">
+            <p class="text-center p-0 m-0">
+              Mua hàng vui lòng liên hệ<br />
+              Kênh đại lý: 0938.925.533 Mr Hải <br />
+              Kênh dự án: 0979.576.242 Mr Hà <br />
+              Zalo: 0964 090 616
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- mobile/tablet/ipad-->
+<div
+  class="d-lg-none d-block cart-mobile"
+  style="background-color: transparent">
+  <div class="d-flex flex-column h-100 bg-white">
+    <div class="flex-grow-1 position-relative overflow-hidden">
+      <div class="overlay" id="overlay"></div>
+      <div class="h-100 d-flex flex-column">
+        <div class="d-flex justify-content-between align-items-center p-2">
+          <i class="fa-solid fa-arrow-left" onclick="back()"></i>
+          <h6 class="p-0 m-0">Giỏ hàng</h6>
+          <a
+            class="remove-cart text-danger"
+            data-bs-toggle="modal"
+            data-bs-target="#removeCartModal">
+            <i class="fa-solid fa-trash me-1"></i>
+          </a>
+        </div>
+        <div
+          class="d-flex justify-content-between align-items-center px-2 py-1 bg-body-secondary">
+          <input
+            class="selectAll form-check-input p-0 m-0"
+            type="checkbox"
+            checked />
+          <p class="p-0 m-0">Chọn tất cả</p>
+          <h6 class="p-0 m-0 fw-bold" style="color: #00a651">
+            <span class="total-all">Chưa có</span>
+          </h6>
+        </div>
+        <div class="bg-body-secondary h-100" style="overflow: auto">
+          <span id="cart-list-mobile"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-footer-mobile mt-auto">
+      <div
+        class="collapse"
+        id="collapseExample"
+        style="background-color: rgba(0, 0, 0, 0.5)">
+        <div
+          class="border-bottom-1 border px-3 py-1 bg-white d-flex justify-content-between align-items-center"
+          style="border-top-left-radius: 15px; border-top-right-radius: 15px"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapseExample">
+          <p class="p-0 m-0"><i class="fa-solid fa-xmark"></i></p>
+          <p class="p-0 m-0">Báo giá chi tiết</p>
+          <p class="p-0 m-0"></p>
+        </div>
+        <div class="px-2 bg-white">
+          <div class="d-flex justify-content-between">
+            <p class="me-2">Tạm tính</p>
+            <p class="fw-bold total">Chưa có</p>
+          </div>
+          <div class="d-flex justify-content-between">
+            <p class="me-2">Phí vận chuyển</p>
+            <p class="fw-bold">Chưa có</p>
+          </div>
+          <div class="d-flex justify-content-between">
+            <p class="me-2">Giảm giá</p>
+            <p class="fw-bold">Chưa có</p>
+          </div>
+          <div class="d-flex justify-content-between">
+            <p class="me-2">Thành tiền</p>
+            <p class="fw-bold total-all">Chưa có</p>
+          </div>
+        </div>
+      </div>
+      <div
+        class="d-flex justify-content-between align-items-center p-2 border-top-1 border"
+        data-bs-toggle="collapse"
+        data-bs-target="#collapseExample"
+        aria-expanded="false"
+        aria-controls="collapseExample">
+        <h6 class="p-0 m-0 fw-bold" style="color: #00a651">
+          <span class="total-all">Chưa có</span
+          ><i class="fa-solid fa-chevron-up ms-2"></i>
+        </h6>
+        <a
+          href="/policy/phuong-thuc-thanh-toan"
+          class="btn btn-primary"
+          style="background-color: #00a651; border: none"
+          ><h6 class="m-0 p-0">Tiếp tục</h6></a
+        >
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $(document).ready(function () {
+    const collapseElement = $('#collapseExample')
+    const overlayElement = $('#overlay')
+
+    // Add click event to the collapse toggle button
+    $("[data-bs-target='#collapseExample']").click(function () {
+      if (overlayElement.css('display') === 'block') {
+        collapseElement.css('background-color', 'white')
+        overlayElement.hide()
+      } else {
+        collapseElement.css('background-color', 'rgba(0, 0, 0, 0.5)')
+        overlayElement.show()
+      }
+    })
+
+    // Add click event to the overlay to close the collapse
+    overlayElement.click(function () {
+      collapseElement.collapse('hide')
+      overlayElement.hide()
+    })
+  })
+
+  function back() {
+    window.history.back()
+  }
+</script>
+
+<script>
+  // get data from local storage
+  let carts = JSON.parse(localStorage.getItem('cart'))
+
+  // render data to view
+  const cartBody = document.querySelector('.cart-body tbody')
+  const cartMobile = document.querySelector('#cart-list-mobile')
+  const renderCart = () => {
+    cartBody.innerHTML = ''
+    cartMobile.innerHTML = ''
+    carts.map((item) => {
+      let data = item.info
+      let quantity = item.quantity
+      let total = data.price * quantity
+      // web
+      let html = `
+        <tr>
+            <th scope="row" >
+                <input class="form-check-input selectOne" type="checkbox" id=${
+                  item.id
+                } checked onclick="renderTotal()"/>
+            </th>
+            <td>
+                <div class="info d-flex">
+                    <a title="${data.name}" href="/product/${item.id}">
+                        <img
+                        src="${data.images[0]}"
+                        alt="${data.name}"/>
+                    </a>
+                    <div class="info-text">
+                        <a title="${data.name}" href="/product/${item.id}">
+                            <h6>${data.name}</h6>
+                        </a>
+                    </div>
+                </div>
+            </td>
+            <td>${data.price.toLocaleString('vi')}<sup>đ</sup></td>
+            <td>
+              <div class="d-flex flex-column align-items-center">
+                <input
+                  type="number"
+                  class="form-control m-0 py-1"
+                  id=${item.id}
+                  value="${quantity}"
+                  min="1" />
+                <div>
+                  <a class="text-danger " onclick="showDeleteOne('${
+                    item.id
+                  }')">Xoá</a>
+                </div>
+              </div>
+              
+            </td>
+            <td>${total.toLocaleString('vi')}<sup>đ</sup></td>
+        </tr>
+    `
+      cartBody.insertAdjacentHTML('beforeend', html)
+
+      // mobile
+      let htmlMobile = `
+          <div
+      class="item d-flex align-items-center bg-white p-2 position-relative mb-2">
+      <div class="form-check">
+        <input
+          class="form-check-input selectOne"
+          type="checkbox"
+          id="${item.id}"
+          onclick="renderTotal()"
+          checked />
+      </div>
+      <img src="${data.images[0]}" alt="${data.name}" />
+      <div class="d-flex flex-column ms-1" style="height: 100px">
+        <div class="flex-grow-1" style="width: 90%">
+          <p class="p-0 m-0">
+            ${data.name}
+          </p>
+        </div>
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="flex-grow-1">
+            <p class="m-0 p-0">${data.price.toLocaleString('vi')}</p>
+          </div>
+          <input
+            type="number"
+            class="form-control m-0 py-1"
+            id="${item.id}"
+            value="${quantity}"
+            min="1" />
+        </div>
+      </div>
+      <div
+        style="position: absolute; top: 0; right: 0; margin-right: 8px">
+        <span class="fs-3">
+          <i class="fa-solid fa-xmark text-secondary" onclick="showDeleteOne('${
+            item.id
+          }')"></i>
+        </span>
+      </div>
+    </div>`
+      cartMobile.insertAdjacentHTML('beforeend', htmlMobile)
+    })
+  }
+  renderCart()
+
+  // render total
+  const renderTotal = () => {
+    let totalAll = 0
+    // get total of all product input checked
+    $('.selectOne:checked').each(function () {
+      let id = $(this).attr('id')
+      let item = carts.find((item) => item.id == id)
+      let price = item.info.price
+      let quantity = item.quantity
+      totalAll += price * quantity
+    })
+    totalAll = totalAll / 2
+
+    $('.total').text(totalAll.toLocaleString('vi') + 'đ')
+    $('.total-all').text(totalAll.toLocaleString('vi') + 'đ')
+  }
+  renderTotal()
+
+  // DELETE
+  let currentDelete = ''
+  function showDeleteOne(id) {
+    // delete in local storage
+    currentDelete = id
+    $('#removeOneModal').modal('show')
+  }
+  function deleteOne() {
+    // delete in local storage
+    if (currentDelete === '') return
+    carts = carts.filter((item) => item.id !== currentDelete)
+    localStorage.setItem('cart', JSON.stringify(carts))
+    currentDelete = ''
+    renderCart()
+    renderTotal()
+    $('#removeOneModal').modal('hide')
+  }
+
+  function cancelDeleteOne() {
+    currentDelete = ''
+  }
+  function deleteAll() {
+    // delete in local storage
+    localStorage.removeItem('cart')
+    carts = []
+    renderCart()
+    renderTotal()
+    $('#removeCartModal').modal('hide')
+  }
+
+  $('#removeCartModal').on('hidden.bs.modal', function (e) {
+    $('.cart-container').removeClass('modal-open')
+    $('.cart-mobile').removeClass('modal-open')
+  })
+
+  $('#removeCartModal').on('show.bs.modal', function (e) {
+    $('.cart-container').addClass('modal-open')
+    $('.cart-mobile').addClass('modal-open')
+  })
+
+  // CHECKBOX
+  $('.selectAll').on('click', function () {
+    if (this.checked) {
+      $('.selectOne').prop('checked', true)
+      $('.selectAll').prop('checked', true)
+    } else {
+      $('.selectOne').prop('checked', false)
+      $('.selectAll').prop('checked', false)
+    }
+    renderTotal()
+  })
+
+  // lister input number change event
+  $('.cart-body').on('change', 'input[type="number"]', function () {
+    // update quantity in local storage
+    let id = $(this).attr('id')
+    let quantity = $(this).val()
+    carts.map((item) => {
+      if (item.id == id) {
+        item.quantity = quantity
+      }
+    })
+    localStorage.setItem('cart', JSON.stringify(carts))
+    renderTotal()
+    renderCart()
+  })
+
+  $('.cart-mobile').on('change', 'input[type="number"]', function () {
+    // update quantity in local storage
+    let id = $(this).attr('id')
+    let quantity = $(this).val()
+    carts.map((item) => {
+      if (item.id == id) {
+        item.quantity = quantity
+      }
+    })
+    localStorage.setItem('cart', JSON.stringify(carts))
+    renderTotal()
+    renderCart()
+  })
+</script>

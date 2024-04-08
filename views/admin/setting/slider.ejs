@@ -1,0 +1,309 @@
+<style>
+  .setting-slider .slider-image {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+  }
+
+  #slider img {
+    width: 200px;
+    height: 100px;
+    object-fit: cover;
+  }
+</style>
+<div class="container-fluid setting-slider">
+  <div class="d-flex justify-content-between">
+    <h4>Quản lý slider</h4>
+    <div>
+      <div
+        class="btn btn-primary mb-1"
+        data-bs-toggle="modal"
+        data-bs-target="#createslider">
+        <i class="fa-sharp fa-solid fa-plus pe-1"></i>
+        Thêm mới
+      </div>
+    </div>
+  </div>
+  <table class="table" id="slider">
+    <thead>
+      <tr>
+        <th scope="col">TT</th>
+        <th scope="col">Ảnh</th>
+        <th scope="col">Tên</th>
+        <th scope="col">Đường dẫn</th>
+        <th scope="col">Vị trí</th>
+        <th scope="col">Thao tác</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  <!-- modal create -->
+  <div
+    class="modal fade"
+    id="createslider"
+    tabindex="-1"
+    aria-labelledby="createslider"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header d-flex justify-content-between">
+          <h1 class="modal-title fs-5" id="createslider">Tạo slider mới</h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="slider-image" class="form-label">Ảnh</label>
+              <input
+                type="file"
+                class="form-control"
+                id="slider-image"
+                accept="image/png, image/jpg, image/jpeg" />
+            </div>
+            <div class="mb-3">
+              <label for="slider-name" class="form-label">Tên slider</label>
+              <input type="text" class="form-control" id="slider-name" />
+            </div>
+            <div class="mb-3">
+              <label for="slider-position" class="form-label">Vị trí</label>
+              <input
+                type="number"
+                class="form-control"
+                id="slider-position"
+                value="0" />
+            </div>
+            <div class="mb-3">
+              <label for="slider-link" class="form-label">Đường dẫn</label>
+              <input type="text" class="form-control" id="slider-link" />
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal">
+            Huỷ
+          </button>
+          <button type="button" class="btn btn-primary" id="createslider">
+            Xác nhận
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- modal edit -->
+  <div
+    class="modal fade"
+    id="editslider"
+    tabindex="-1"
+    aria-labelledby="editslider"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header d-flex justify-content-between">
+          <h1 class="modal-title fs-5" id="editslider">
+            Cập nhật thông tin chuyển khoản
+          </h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="slider-image" class="form-label">Ảnh</label>
+              <input
+                type="file"
+                class="form-control"
+                id="slider-image"
+                accept="image/png, image/jpg, image/jpeg" />
+            </div>
+            <div class="mb-3">
+              <label for="slider-name" class="form-label">Tên slider</label>
+              <input type="text" class="form-control" id="slider-name" />
+            </div>
+            <div class="mb-3">
+              <label for="slider-position" class="form-label">Vị trí</label>
+              <input
+                type="number"
+                class="form-control"
+                id="slider-position"
+                value="0" />
+            </div>
+            <div class="mb-3">
+              <label for="slider-link" class="form-label">Đường dẫn</label>
+              <input type="text" class="form-control" id="slider-link" />
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal">
+            Huỷ
+          </button>
+          <button type="button" class="btn btn-primary" onclick="editslider()">
+            Cập nhật
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- modal delete -->
+  <div
+    class="modal fade"
+    id="deleteslider"
+    tabindex="-1"
+    aria-labelledby="deleteslider"
+    aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="deleteslider">Cảnh báo</h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Bạn chắc chắn muốn xóa thông tin ngân hàng này?
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal">
+            Huỷ
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            onclick="confirmDeleteslider()">
+            Xác nhận
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  var setting = <%- JSON.stringify(setting) %>
+  let currentslider = null
+  $(document).ready(function () {
+    renderslider()
+
+    $('button#createslider').on('click', async function () {
+      var body = {
+        name: $('#slider-name').val(),
+        position: $('#slider-position').val(),
+        link: $('#slider-link').val(),
+      }
+      var files = $('#slider-image').prop('files')
+      var url = files.length > 0 ? await uploadImage(files, 'slider') : null
+      if (url != null) {
+        body.image = url
+      }
+      updateslider({
+        slider: [...setting?.slider, body],
+      })
+    })
+  })
+
+  function selectEditslider(index, id) {
+    const slider = setting?.slider[index]
+    currentslider = id
+    $('#editslider #slider-name').val(slider.name)
+    $('#editslider #slider-position').val(slider.position)
+    $('#editslider #slider-link').val(slider.link)
+    $('#editslider').modal('show')
+  }
+  async function editslider() {
+    let body = {
+      name: $('#editslider #slider-name').val(),
+      position: $('#editslider #slider-position').val(),
+      link: $('#editslider #slider-link').val(),
+    }
+    var files = $('#editslider #slider-image').prop('files')
+    var url = files.length > 0 ? await uploadImage(files, 'slider') : null
+    if (url != null) {
+      body.image = url
+    }
+
+    let newslider = setting?.slider
+    newslider.forEach((slider, index) => {
+      if (slider._id == currentslider) {
+        newslider[index] = { ...newslider[index], ...body }
+      }
+    })
+    updateslider({
+      slider: newslider,
+    })
+  }
+
+  function deleteslider(id) {
+    currentslider = id
+    $('#deleteslider').modal('show')
+  }
+
+  function confirmDeleteslider() {
+    updateslider({
+      slider: setting?.slider.filter((slider) => slider._id != currentslider),
+    })
+  }
+
+  function renderslider() {
+    let html = ''
+    setting?.slider
+      .sort((a, b) => a.position - b.position)
+      .forEach((item, index) => {
+        html += `
+            <tr>
+            <th scope="row">${index + 1}</th>
+            <td><img src="${item.image}" alt="" /></>
+            <td>${item.name}</td>
+            <td>${item.link}</td>
+            <td>${item.position}</td>
+            <td>
+                <div class="btn btn-primary" onclick="selectEditslider('${index}', '${
+          item._id
+        }')" >Sửa</div>
+                <div class="btn btn-danger" onclick="deleteslider('${
+                  item._id
+                }')">Xóa</div>
+            </td>
+            </tr>
+        `
+      })
+
+    $('tbody').append(html)
+  }
+
+  function updateslider(body) {
+    $.ajax({
+      url: '/admin/setting',
+      type: 'PATCH',
+      contentType: 'application/json',
+      data: JSON.stringify(body),
+      success: function (data) {
+        if (data.status == 'ok') {
+          currentslider = null
+          $('#createslider').modal('hide')
+          window.location.reload()
+        } else {
+          alert('Thao tác thất bại')
+        }
+      },
+    })
+  }
+</script>

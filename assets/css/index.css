@@ -1,0 +1,260 @@
+/* Reset CSS */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  font-family: 'Geologica', sans-serif;
+  background: #fff;
+  height: 100%;
+}
+.wrapper {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}
+
+h1 {
+  font-family: 'Geologica', sans-serif;
+  font-weight: 500;
+}
+
+/* Header */
+.navbar-brand {
+  width: 15%;
+}
+
+@media (min-width: 992px) {
+  .navbar-brand {
+    width: 5%;
+  }
+}
+
+.nav-link {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+/* Home Section */
+#home-section {
+}
+
+.error {
+  color: red;
+  border: 1px solid red;
+}
+#short-form {
+  background-color: white;
+  position: absolute;
+  top: 5%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  border-radius: 20px;
+  /* add shadow */
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Tìm chuyến bay */
+
+.short-form-large {
+  display: none;
+}
+
+.short-form-small {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (min-width: 992px) {
+  .short-form-small {
+    display: none;
+  }
+
+  .short-form-large {
+    display: flex;
+    padding: 0 20px;
+  }
+}
+
+.short-form-small .button {
+  width: fit-content;
+  border-radius: 5px;
+  padding: 10px 20px;
+  margin: 10px;
+  background-color: #ffffff;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  box-shadow: 0 0 20px 10px rgba(253, 0, 0, 0.2);
+}
+
+.short-form-large input {
+  padding-left: 10px;
+  width: fit-content;
+  border-radius: 3px;
+  border: 1px solid #ccc;
+  outline: none;
+}
+
+#short-form form {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px;
+}
+
+#short-form label {
+  display: block;
+  position: relative;
+  white-space: nowrap;
+}
+
+/* Modal */
+#dtc-search {
+  display: block;
+}
+
+#modal {
+  display: block;
+  position: relative;
+  z-index: 999;
+}
+@media screen and (min-width: 992px) {
+  #modal {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-content {
+    border: 1px solid #888;
+    width: fit-content;
+    height: fit-content;
+    margin: auto;
+    margin-top: 5%;
+  }
+}
+
+/* home */
+
+/* home - end */
+
+/* scroll bar*/
+:root {
+  --code-color: darkred;
+  --code-bg-color: #aaaaaa;
+  --code-font-size: 14px;
+  --code-line-height: 1.4;
+  --scroll-bar-color: #c5c5c5;
+  --scroll-bar-bg-color: #f6f6f6;
+}
+
+pre {
+  color: var(--code-color);
+  font-size: var(--code-font-size);
+  line-height: var(--code-line-height);
+  background-color: var(--code-bg-color);
+}
+
+.code-block {
+  max-height: 100px;
+  overflow: auto;
+  padding: 8px 7px 5px 15px;
+  margin: 0px 0px 0px 0px;
+  border-radius: 7px;
+}
+
+::-webkit-scrollbar-corner {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scroll-bar-color) var(--scroll-bar-bg-color);
+}
+
+/* Works on Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 18px;
+  height: 18px;
+}
+
+@media screen and (max-width: 992px) {
+  *::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--scroll-bar-bg-color);
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--scroll-bar-color);
+  border-radius: 20px;
+  border: 3px solid var(--scroll-bar-bg-color);
+}
+
+/* flicker */
+@keyframes flickerAnimation {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@-o-keyframes flickerAnimation {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@-moz-keyframes flickerAnimation {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.animate-flicker {
+  -webkit-animation: flickerAnimation 1s infinite;
+  -moz-animation: flickerAnimation 1s infinite;
+  -o-animation: flickerAnimation 1s infinite;
+  animation: flickerAnimation 1s infinite;
+}
+
+h1 {
+  font-size: 1rem;
+}

@@ -1,0 +1,54 @@
+<div class="container-fluid setting-about">
+  <div class="d-flex align-items-center justify-content-between">
+    <div class="d-flex gap-3 align-items-center">
+      <h4>Trang giới thiệu</h4>
+    </div>
+    <button class="btn btn-primary disabled" onclick="save()" id="save-about">
+      <i class="fa-solid fa-floppy-disk pe-1"></i>
+      Lưu
+    </button>
+  </div>
+  <div class="mt-3">
+    <div id="setting-about"></div>
+  </div>
+</div>
+<script>
+  var content = <%- JSON.stringify(setting.about) %>
+  var toolbarOptions = [
+    [{ header: [1, 2, 3, 4, 5, 6, false] }],
+    ['bold', 'italic', 'underline', 'strike'], // toggled buttons
+    [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+    [{ font: [] }],
+    [{ align: [] }],
+    [{ list: 'ordered' }, { list: 'bullet' }],
+    ['link', 'image'],
+  ]
+  var quill = new Quill('#setting-about', {
+    modules: {
+      toolbar: toolbarOptions,
+    },
+    theme: 'snow',
+  })
+  quill.setContents(content)
+  quill.on('text-change', function () {
+    $('#save-about').removeClass('disabled')
+  })
+  function save() {
+    if ($('#save-about').hasClass('disabled')) return
+    var about = quill.getContents()?.ops
+    $.ajax({
+      url: '/admin/setting',
+      type: 'PATCH',
+      contentType: 'application/json',
+      data: JSON.stringify({ about: about }),
+      success: function (data) {
+        if (data.status == 'ok') {
+          $('#save-about').addClass('disabled')
+          alert('Thao tác thành công')
+        } else {
+          alert('Thao tác thất bại')
+        }
+      },
+    })
+  }
+</script>

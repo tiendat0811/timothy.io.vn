@@ -1,0 +1,81 @@
+<style>
+  .fixed-contact {
+    position: fixed;
+    z-index: 1000;
+    bottom: 0;
+    right: 0;
+    width: fit-content;
+    height: fit-content;
+    background-color: transparent;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 23px;
+    padding-bottom: 75px;
+  }
+
+  @media screen and (max-width: 768px) {
+    .fixed-contact {
+      padding-right: 27px;
+    }
+  }
+
+  .button-contact {
+    display: block;
+    margin-bottom: 20px;
+    cursor: pointer;
+
+    text-align: center;
+    position: relative;
+  }
+
+  .button-contact:hover {
+    transform: scale(1.5);
+  }
+
+  .button-contact img.icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 1px solid rgb(206, 206, 206);
+    object-fit: cover;
+    background-color: aliceblue;
+  }
+
+  .button-contact::before {
+    content: attr(data-description);
+    position: absolute;
+    top: 50%;
+    right: calc(100% + 30px); /* Thay đổi từ left sang right */
+    transform: translate(
+      50%,
+      -50%
+    ); /* Thay đổi từ translate(-50%, -50%) sang translate(50%, -50%) */
+    width: max-content;
+    padding: 5px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    font-size: 12px;
+    text-align: center;
+    white-space: nowrap;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s, visibility 0s linear 0.3s;
+  }
+
+  .button-contact:hover::before {
+    visibility: visible;
+    opacity: 1;
+    transition-delay: 0s;
+  }
+</style>
+
+<div class="fixed-contact">
+  <% setting?.social.forEach((item, index) =>{ %>
+  <a
+    href="<%= item.link %>"
+    class="button-contact"
+    data-description="<%= item.name %>">
+    <img class="icon" src="<%= item.image %>" alt="" />
+  </a>
+  <% }) %>
+</div>

@@ -1,0 +1,93 @@
+<style>
+  .register-container {
+    margin-top: 100px;
+    margin-bottom: 100px;
+  }
+  .register-container h1 {
+    text-align: center;
+    margin-bottom: 50px;
+  }
+  .register-container form {
+    width: 50%;
+    margin: auto;
+  }
+  .register-container form div {
+    margin-bottom: 20px;
+  }
+  .register-container form div label {
+    display: block;
+    margin-bottom: 10px;
+  }
+  .register-container form div input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  .register-container form div button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #00a651;
+    color: #fff;
+    cursor: pointer;
+  }
+  .register-container form div button:hover {
+    background-color: #f9b087;
+  }
+  .register-container .alert {
+    display: none;
+    width: fit-content;
+    margin: auto;
+  }
+
+  .register-alert a {
+    color: red;
+    text-decoration: none;
+  }
+
+  .register-alert a:hover {
+    text-decoration: underline;
+    font-weight: bold;
+  }
+
+  .register-container .button {
+    text-align: center;
+  }
+</style>
+
+<div class="container register-container">
+  <h1>Đăng ký</h1>
+  <div class="register-alert">
+    <div class="alert alert-success register-alert-success" role="alert">
+      <%= flash.success[0] %>!
+      <a href="/auth/login">Đăng nhập ngay</a>
+    </div>
+    <div class="alert alert-danger register-alert-error" role="alert">
+      <%= flash.error[0] %>!
+    </div>
+  </div>
+  <form method="POST" action="/auth/register">
+    <div>
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required />
+    </div>
+    <div>
+      <label for="password">Mật khẩu:</label>
+      <input type="password" id="password" name="password" required />
+    </div>
+    <div class="button">
+      <button type="submit">Đăng ký</button>
+    </div>
+  </form>
+</div>
+
+<% if (flash && flash.success.length > 0) { %>
+<script>
+  document.querySelector('.register-alert-success').style.display = 'block'
+</script>
+<% } %> <% if (flash && flash.error.length > 0) { %>
+<script>
+  document.querySelector('.register-alert-error').style.display = 'block'
+</script>
+<% } %>

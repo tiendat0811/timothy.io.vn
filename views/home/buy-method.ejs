@@ -1,0 +1,249 @@
+<style>
+  .buy-pay-container .icon {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+  }
+
+  .buy-pay-container .buy-container {
+    justify-content: space-around;
+  }
+
+  p {
+    margin-bottom: 10px;
+  }
+  .buy-pay-container .col-title {
+    font-weight: 600;
+    text-align: center;
+  }
+
+  .buy-pay-container .title {
+    font-weight: bold;
+    margin-top: 20px;
+  }
+
+  .buy-pay-container .button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    padding: 10px 10px;
+
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+    transition: transform 0.5s;
+  }
+
+  .buy-pay-container .button:hover {
+    background-color: #00a651;
+    color: #ffffff;
+    /* zoom when hover*/
+    transform: scale(1.1);
+  }
+
+  .buy-pay-container .button img.buy-pay-container .icon {
+    vertical-align: middle;
+    margin-right: 10px;
+  }
+
+  .buy-pay-container .sub-method {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .buy-pay-container .row-item {
+    margin-right: 20px;
+  }
+
+  @media (max-width: 768px) {
+    .buy-pay-container .container {
+      padding: 10px;
+    }
+
+    .buy-pay-container .button {
+      display: block;
+      margin-bottom: 10px;
+    }
+  }
+
+  .buy-pay-container .map-wrapper iframe {
+    width: 100%;
+    height: 300px;
+    border: none;
+    border-radius: 10px;
+    margin-top: 20px;
+  }
+
+  .buy-pay-container .buy-method {
+    background: rgb(131, 58, 180);
+    background: linear-gradient(
+      90deg,
+      rgba(131, 58, 180, 0.5) 0%,
+      rgba(253, 29, 29, 0.5) 35%,
+      rgba(252, 176, 69, 0.5) 100%
+    );
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+  }
+  .buy-pay-container .payment-method {
+    background: rgb(238, 174, 202);
+    background: linear-gradient(
+      90deg,
+      rgba(238, 174, 202, 0.5) 0%,
+      rgba(148, 187, 233, 0.5) 100%
+    );
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+  }
+</style>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+<div class="buy-pay-container container">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="buy-method">
+        <h2 class="col-title">Các hình thức mua vé</h2>
+        <p class="title">1. Trực tuyến trên website, nhanh nhất - tiện nhất!</p>
+        <div class="button" onclick="showFullForm()">
+          <img
+            class="icon"
+            src="/static/images/icons/airplane-ticket.png"
+            alt="" />Đặt vé ngay
+        </div>
+
+        <p class="title">2. Qua các kênh chat trực tuyến</p>
+        <div class="sub-method">
+          <div class="row-item">
+            <div class="button" onclick="showChat()">
+              <img
+                class="icon"
+                src="/static/images/icons/live-chat.png"
+                alt="" />
+              Chat với nhân viên
+            </div>
+          </div>
+          <% setting?.social.forEach((item, index) =>{ %>
+          <div class="row-item">
+            <a
+              class="button"
+              href="<%= item.link %>"
+              data-description="<%= item.name %>">
+              <img class="icon" src="<%= item.image %>" alt="" /><%= item.name
+              %>
+            </a>
+          </div>
+          <% }) %>
+        </div>
+
+        <p class="title">3. Gọi điện cho tổng đài VN Bay 24/7</p>
+        <div class="button">
+          <img
+            class="icon"
+            src="/static/images/icons/phone-call.png"
+            alt="" />Hotline: <%= setting?.contact.phone %>
+        </div>
+
+        <p class="title">4. Đến trực tiếp văn phòng VN Bay của chúng tôi</p>
+        <div class="button">Địa chỉ: <%= setting?.contact.address %></div>
+        <div class="map-wrapper">
+          <div style="overflow: hidden; max-width: 100%; width: 100%">
+            <iframe
+              id="map-frame"
+              class="map-frame"
+              frameborder="0"
+              scrolling="no"
+              marginheight="0"
+              marginwidth="0"
+              allowfullscreen=""
+              style="overflow: hidden"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d449.1815566291403!2d106.67141577327399!3d10.835220080356006!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317529a63b05cef5%3A0xd2bfc8c1cac16a50!2sVNBAY!5e0!3m2!1sen!2s!4v1689523270883!5m2!1sen!2s"></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="payment-method">
+        <h2 class="col-title">Cách hình thức thanh toán</h2>
+
+        <p class="title">1. Thanh toán bằng tiền mặt tại văn phòng VN Bay</p>
+
+        <div class="button">
+          <img
+            class="icon"
+            src="/static/images/icons/payment-home.png"
+            alt="" />Sau khi đặt hàng thành công, Quý khách vui lòng qua văn
+          phòng VN Bay để thanh toán và nhận vé.
+        </div>
+
+        <p class="title">2. Thanh toán tại nhà</p>
+        <div class="sub-method">
+          <div class="row-item">
+            <div class="button">
+              <img
+                class="icon"
+                src="/static/images/icons/cash-payment.png"
+                alt="" />
+              Nhân viên vnbay.org sẽ giao vé & thu tiền tại nhà theo địa chỉ Quý
+              khách cung cấp.
+            </div>
+          </div>
+        </div>
+
+        <p class="title">3. Thanh toán qua cổng thanh toán điện tử</p>
+        <div class="button">
+          <img
+            class="icon"
+            src="/static/images/icons/nganluong.jpg"
+            alt="" />Quý khách có thể thanh toán ngay (trực tuyến) qua cổng Ngân
+          lượng
+        </div>
+
+        <p class="title">4. Thanh toán qua chuyển khoản</p>
+        <div class="button">
+          <img
+            class="icon"
+            src="/static/images/icons/bank-transfer.png"
+            alt="" />
+          Quý khách có thể thanh toán bằng cách chuyển khoản trực tiếp tại ngân
+          hàng, qua thẻ ATM, hoặc qua Internet banking.
+        </div>
+        <img
+          src="/static/images/icons/partner.jpg"
+          alt=""
+          style="margin-top: 10px" />
+      </div>
+    </div>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var buyMethod = document.querySelector('.buy-method')
+      var paymentMethod = document.querySelector('.payment-method')
+
+      function handleScroll() {
+        var buyMethodElement = buyMethod.getBoundingClientRect().top
+        var paymentMethodElement = paymentMethod.getBoundingClientRect().top
+        var windowHeight = window.innerHeight
+
+        if (buyMethodElement < windowHeight) {
+          buyMethod.classList.add('animate__animated', 'animate__backInLeft')
+          buyMethod.style.opacity = '1'
+        }
+
+        if (paymentMethodElement < windowHeight) {
+          paymentMethod.classList.add(
+            'animate__animated',
+            'animate__backInRight',
+          )
+          paymentMethod.style.opacity = '1'
+        }
+      }
+
+      // Gọi hàm handleScroll() khi trang được tải và khi cuộn trang
+      window.addEventListener('load', handleScroll)
+      window.addEventListener('scroll', handleScroll)
+    })
+  </script>
+</div>

@@ -1,0 +1,175 @@
+<style>
+  .post-container {
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .posts-list li {
+    margin-bottom: 20px;
+  }
+
+  .posts-list img {
+    width: 300px;
+    height: 150px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  .posts-list a {
+    display: flex;
+    text-decoration: none;
+  }
+
+  .posts-list a .info {
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  .posts-list a .info .time {
+    font-size: 14px;
+    color: #999;
+  }
+
+  .posts-list a .info .title {
+    font-size: 18px;
+    color: #333;
+    font-weight: bold;
+  }
+
+  .posts-list a .info .description {
+    font-size: 16px;
+    color: #666;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -moz-box-orient: vertical;
+    -ms-box-orient: vertical;
+    box-orient: vertical;
+    -webkit-line-clamp: 4;
+    -moz-line-clamp: 4;
+    -ms-line-clamp: 4;
+    line-clamp: 4;
+    word-break: break-all;
+  }
+
+  @media screen and (max-width: 768px) {
+    .posts-list img {
+      width: 100%;
+      height: auto;
+    }
+
+    .posts-list a {
+      flex-direction: column;
+      background-color: #ebebeb;
+      padding: 8px;
+      border-radius: 8px;
+    }
+
+    .posts-list a .info {
+      margin-left: 0;
+    }
+
+    .posts-list a .info .description {
+      -webkit-line-clamp: 2;
+      -moz-line-clamp: 2;
+      -ms-line-clamp: 2;
+      line-clamp: 2;
+      word-break: break-all;
+    }
+  }
+</style>
+<div class="container">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+      <li class="breadcrumb-item active">Tin tức</li>
+    </ol>
+  </nav>
+  <div id="posts-section" class="post-container">
+    <div class="page_navigation">
+      <nav aria-label="Page navigation example">
+        <ul class="pagination"></ul>
+      </nav>
+    </div>
+    <ul class="posts-list p-0"></ul>
+  </div>
+</div>
+
+<script>
+  let currentPage = 1
+  // Lấy trang từ URL
+  const urlParams = new URLSearchParams(window.location.search)
+  const page = urlParams.get('page')
+  if (page) {
+    currentPage = parseInt(page)
+  }
+  getPost(currentPage)
+  const paginationPostElement = document.querySelector(
+    '.post-container .pagination',
+  )
+
+  function getPost(page) {
+    const limit = 5
+    const baseUrl = `${window.location.pathname}?page=${page}&limit=${limit}`
+    history.pushState({}, '', baseUrl)
+    const newUrl = `${window.location.pathname}/index?category=news&page=${page}&limit=5`
+
+    // Gửi yêu cầu AJAX để nhận dữ liệu bài viết mới
+    const xhr = new XMLHttpRequest()
+    xhr.open('GET', newUrl, true)
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        const responseData = JSON.parse(xhr.responseText)
+        const postsContainer = document.querySelector('.posts-list')
+        // Xóa danh sách bài viết hiện tại
+        while (postsContainer.firstChild) {
+          postsContainer.firstChild.remove()
+        }
+        if (responseData.data.data.length === 0) {
+          const empty = document.createElement('h1')
+          empty.classList.add('empty')
+          empty.textContent = 'Không có bài viết nào'
+          postsContainer.appendChild(empty)
+          return
+        }
+
+        // Cập nhật tổng số trang
+        let totalPages = parseInt(responseData.data.count / limit)
+        if (responseData.data.count % limit > 0) {
+          totalPages++
+        }
+        createPagination(paginationPostElement, page, totalPages, getPost)
+        // Render lại danh sách bài viết mới
+        responseData.data.data.forEach(function (post) {
+          const listItem = document.createElement('li')
+          let url = post.image ? post.image : '/static/images/news.png'
+          const date = new Date(post.createdAt)
+          const isoDate = date.toISOString()
+          listItem.innerHTML = `
+                   <article itemtype="https://schema.org/Article" itemscope>
+                    <a href="/post/${post.slug}" class="item">
+                        <img src="${url}" alt="${post.title}" itemprop="image">
+                        <div class="info">
+                            <div class="time" itemprop="datePublished" datetime="${isoDate}">${post.createdDate}</div>
+                            <div class="title" itemprop="headline">${post.title}</div>
+                            <div class="description" itemprop="description">${post.summary}</div>
+                        </div>
+                        </a>
+                    </article>  
+                        `
+          postsContainer.appendChild(listItem)
+        })
+      }
+    }
+    xhr.send()
+  }
+</script>

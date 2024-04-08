@@ -1,0 +1,407 @@
+<style>
+  .setting-post .filter {
+    width: fit-content;
+    margin-bottom: 20px;
+    display: flex;
+  }
+  .setting-post label {
+    /* 1 line */
+    white-space: nowrap;
+    align-self: center;
+    margin-right: 5px;
+  }
+  .setting-post .admin-post td.summary {
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+</style>
+<div class="container-fluid setting-post">
+  <div class="d-flex justify-content-between">
+    <h4>Quản lý bài viết</h4>
+    <button
+      type="button"
+      class="btn btn-primary mb-3"
+      data-bs-toggle="modal"
+      data-bs-target="#createPostModal">
+      Thêm bài viết
+    </button>
+  </div>
+
+  <div class="d-flex justify-content-center">
+    <nav aria-label="Page navigation example">
+      <ul class="pagination"></ul>
+    </nav>
+  </div>
+  <table class="table admin-post">
+    <thead>
+      <tr>
+        <th scope="col">TT</th>
+        <th scope="col">Tiêu đề</th>
+        <th scope="col">Tóm tắt</th>
+        <th scope="col">Ngày đăng</th>
+        <th scope="col">Lần sửa cuối</th>
+        <th scope="col">Thao tác</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <!-- modal create -->
+  <div
+    class="modal fade"
+    id="createPostModal"
+    tabindex="-1"
+    aria-labelledby="createPostModal"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header d-flex justify-content-between">
+          <h1 class="modal-title fs-5" id="createPostModal">Tạo bài viết</h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="title" class="form-label">Tiêu đề</label>
+              <input
+                type="text"
+                class="form-control"
+                id="title"
+                placeholder="Nhập tiêu đề bài viết" />
+            </div>
+            <div class="mb-3">
+              <label for="summary" class="form-label">Tóm tắt</label>
+              <textarea
+                class="form-control"
+                id="summary"
+                placeholder="Nhập tóm tắt bài  viết"></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="content-editor" class="form-label">Nội dung</label>
+              <div id="content-editor"></div>
+            </div>
+            <div class="mb-3">
+              <label for="image" class="form-label">Ảnh</label>
+              <input
+                class="form-control"
+                type="file"
+                id="image"
+                accept="image/png, image/jpg, image/jpeg" />
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal">
+            Huỷ
+          </button>
+          <button type="button" class="btn btn-primary">Xác nhận</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- modal delete -->
+  <div
+    class="modal fade"
+    id="deletePostModal"
+    tabindex="-1"
+    aria-labelledby="deletePostModal"
+    aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="deletePostModal">Cảnh báo</h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"></button>
+        </div>
+        <div class="modal-body">Bạn chắc chắn muốn xóa bài viết này?</div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal">
+            Huỷ
+          </button>
+          <button type="button" class="btn btn-primary">Xác nhận</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- modal edit -->
+
+  <div
+    class="modal fade"
+    id="editPostModal"
+    tabindex="-1"
+    aria-labelledby="editPostModal"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header d-flex justify-content-between">
+          <h1 class="modal-title fs-5" id="editPostModal">Sửa bài viết</h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="title" class="form-label">Tiêu đề</label>
+              <input
+                type="text"
+                class="form-control"
+                id="title"
+                placeholder="Nhập tiêu đề bài viết" />
+            </div>
+            <div class="mb-3">
+              <label for="summary" class="form-label">Tóm tắt</label>
+              <textarea
+                class="form-control"
+                id="summary"
+                placeholder="Nhập tóm tắt của bài viết">
+              </textarea>
+            </div>
+            <div class="mb-3">
+              <label for="content-editor" class="form-label">Nội dung</label>
+              <div id="content-editor"></div>
+            </div>
+            <div class="mb-3">
+              <label for="image" class="form-label">Ảnh</label>
+              <input
+                class="form-control"
+                type="file"
+                id="image"
+                accept="image/png, image/jpg, image/jpeg" />
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal">
+            Huỷ
+          </button>
+          <button type="button" class="btn btn-primary">Xác nhận</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  var toolbarOptions = [
+    [{ header: [1, 2, 3, 4, 5, 6, false] }],
+    ['bold', 'italic', 'underline', 'strike'], // toggled buttons
+    [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+    [{ font: [] }],
+    [{ align: [] }],
+    [{ list: 'ordered' }, { list: 'bullet' }],
+    ['link', 'image'],
+  ]
+  var quillCreate = new Quill('#createPostModal #content-editor', {
+    modules: {
+      toolbar: toolbarOptions,
+    },
+    theme: 'snow',
+  })
+
+  var quillEdit = new Quill('#editPostModal #content-editor', {
+    modules: {
+      toolbar: toolbarOptions,
+    },
+    theme: 'snow',
+  })
+
+  let paginationPostElement = document.querySelector(
+    '.setting-post .pagination',
+  )
+  let currentPost = null
+  let listPost = []
+  const postsTbody = document.querySelector('.admin-post tbody')
+  let currentPage = 1
+
+  const render = (posts) => {
+    let html = ''
+    posts.forEach((post, index) => {
+      html += `
+            <tr>
+            <th scope="row">${index + 1}</th>
+            <td>${post.title}</td>
+            <td class="summary">${post.summary}</td>
+            <td>${post.createdDate}</td>
+            <td>${post.updatedAt}</td>
+            <td>
+                <div class="btn btn-primary" onclick="editPost('${index}', '${
+        post._id
+      }')">Sửa</div>
+                <div class="btn btn-danger" onclick="deletePost('${
+                  post._id
+                }')">Xóa</div>
+            </td>
+            </tr>
+        `
+    })
+    postsTbody.innerHTML = html
+  }
+
+  const getPosts = async (page) => {
+    const url = `${window.location.origin}/post`
+    const limit = 10
+    try {
+      const res = await fetch(
+        `${url}/index?limit=${limit}&page=${page}&category=news`,
+      )
+      const data = await res.json()
+      let totalPages = parseInt(data.data.count / limit) + 1
+      createPagination(paginationPostElement, page, totalPages, getPosts)
+      listPost = data.data.data
+      render(data.data.data)
+      return data
+    } catch (error) {
+      console.log(error)
+    }
+    return data
+  }
+
+  const deletePost = async (id) => {
+    currentPost = id
+    $('#deletePostModal').modal('show')
+  }
+
+  const editPost = (index, id) => {
+    currentPost = id
+    //fill post data to modal from index
+    const postData = listPost[index]
+    $('#editPostModal #title').val(postData.title)
+    $('#editPostModal #summary').val(postData.summary)
+    quillEdit.setContents(postData.description)
+    $('#editPostModal').modal('show')
+  }
+
+  const init = async () => {
+    const res = await getPosts(currentPage)
+  }
+  init()
+
+  $(document).ready(function () {
+    // delete
+    $('#deletePostModal').on('hidden.bs.modal', function (e) {
+      currentPost = null
+    })
+
+    $('#deletePostModal .btn-primary').click(async function () {
+      try {
+        const res = await fetch(
+          `${window.location.origin}/post/${currentPost}`,
+          {
+            method: 'DELETE',
+          },
+        )
+        const data = await res.json()
+
+        if (data.status === 'ok') {
+          $('#deletePostModal').modal('hide')
+          init()
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    })
+
+    // create
+    $('#createPostModal').on('hidden.bs.modal', function (e) {
+      currentPost = null
+    })
+
+    $('#createPostModal .btn-primary').click(async function () {
+      const files = $('#createPostModal #image').prop('files')
+      let url = ''
+      if (files.length > 0) {
+        url = await uploadImage(files, 'posts')
+      }
+      const body = {
+        title: $('#createPostModal #title').val(),
+        summary: $('#createPostModal #summary').val(),
+        description: quillCreate.getContents()?.ops,
+        category: 'news',
+      }
+      if (url != '') {
+        body.image = url
+      }
+
+      try {
+        const res = await fetch(`${window.location.origin}/post`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body),
+        })
+        const data = await res.json()
+        if (data.status === 'ok') {
+          $('#createPostModal').modal('hide')
+          init()
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    })
+
+    // edit
+    $('#editPostModal').on('hidden.bs.modal', function (e) {
+      currentPost = null
+    })
+
+    $('#editPostModal .btn-primary').click(async function () {
+      try {
+        const files = $('#editPostModal #image').prop('files')
+        let url = ''
+        if (files.length > 0) {
+          url = await uploadImage(files, 'posts')
+        }
+        const body = {
+          title: $('#editPostModal #title').val(),
+          summary: $('#editPostModal #summary').val(),
+          description: quillEdit.getContents()?.ops,
+        }
+        if (url != '') {
+          body.image = url
+        }
+
+        const res = await fetch(
+          `${window.location.origin}/post/${currentPost}`,
+          {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body),
+          },
+        )
+        const data = await res.json()
+
+        if (data.status === 'ok') {
+          $('#editPostModal').modal('hide')
+          init()
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    })
+  })
+</script>

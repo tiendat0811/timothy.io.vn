@@ -1,0 +1,356 @@
+<style>
+  .setting-banking .bank-image {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+  }
+
+  #banking img {
+    width: 200px;
+    height: 100px;
+    object-fit: contain;
+  }
+</style>
+<div class="container-fluid setting-banking">
+  <div class="d-flex justify-content-between">
+    <h4>Thông tin chuyển khoản</h4>
+    <div>
+      <div
+        class="btn btn-primary mb-1"
+        data-bs-toggle="modal"
+        data-bs-target="#createBanking">
+        <i class="fa-sharp fa-solid fa-plus pe-1"></i>
+        Thêm mới
+      </div>
+    </div>
+  </div>
+  <table class="table" id="banking">
+    <thead>
+      <tr>
+        <th scope="col">TT</th>
+        <th scope="col">Ảnh</th>
+        <th scope="col">Chủ tài khoản</th>
+        <th scope="col">Số tài khoản</th>
+        <th scope="col">Ngân hàng</th>
+        <th scope="col">Chi nhánh</th>
+        <th scope="col">Thao tác</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  <!-- modal create -->
+  <div
+    class="modal fade"
+    id="createBanking"
+    tabindex="-1"
+    aria-labelledby="createBanking"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header d-flex justify-content-between">
+          <h1 class="modal-title fs-5" id="createBanking">
+            Tạo thông tin chuyển khoản
+          </h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="bank-fullname" class="form-label"
+                >Tên chủ tài khoản</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="bank-fullname"
+                placeholder="" />
+            </div>
+            <div class="mb-3">
+              <label for="bank-number" class="form-label">Số tài khoản</label>
+              <input
+                type="text"
+                class="form-control"
+                id="bank-number"
+                placeholder="" />
+            </div>
+            <div class="mb-3">
+              <label for="bank-name" class="form-label">Ngân hàng</label>
+              <input
+                type="text"
+                class="form-control"
+                id="bank-name"
+                placeholder="" />
+            </div>
+            <div class="mb-3">
+              <label for="bank-locale" class="form-label">Chi nhánh</label>
+              <input
+                type="text"
+                class="form-control"
+                id="bank-locale"
+                placeholder="" />
+            </div>
+            <div class="mb-3">
+              <label for="bank-image" class="form-label">Ảnh</label>
+              <input
+                type="file"
+                class="form-control"
+                id="bank-image"
+                placeholder=""
+                accept="image/png, image/jpg, image/jpeg" />
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal">
+            Huỷ
+          </button>
+          <button type="button" class="btn btn-primary" id="createBanking">
+            Xác nhận
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- modal edit -->
+  <div
+    class="modal fade"
+    id="editBanking"
+    tabindex="-1"
+    aria-labelledby="editBanking"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header d-flex justify-content-between">
+          <h1 class="modal-title fs-5" id="editBanking">
+            Cập nhật thông tin chuyển khoản
+          </h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="bank-fullname" class="form-label"
+                >Tên chủ tài khoản</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="bank-fullname"
+                placeholder="" />
+            </div>
+            <div class="mb-3">
+              <label for="bank-number" class="form-label">Số tài khoản</label>
+              <input
+                type="text"
+                class="form-control"
+                id="bank-number"
+                placeholder="" />
+            </div>
+            <div class="mb-3">
+              <label for="bank-name" class="form-label">Ngân hàng</label>
+              <input
+                type="text"
+                class="form-control"
+                id="bank-name"
+                placeholder="" />
+            </div>
+            <div class="mb-3">
+              <label for="bank-locale" class="form-label">Chi nhánh</label>
+              <input
+                type="text"
+                class="form-control"
+                id="bank-locale"
+                placeholder="" />
+            </div>
+            <div class="mb-3">
+              <label for="bank-image" class="form-label">Ảnh</label>
+              <input
+                type="file"
+                class="form-control"
+                id="bank-image"
+                placeholder=""
+                accept="image/png, image/jpg, image/jpeg" />
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal">
+            Huỷ
+          </button>
+          <button type="button" class="btn btn-primary" onclick="editBanking()">
+            Cập nhật
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- modal delete -->
+  <div
+    class="modal fade"
+    id="deleteBanking"
+    tabindex="-1"
+    aria-labelledby="deleteBanking"
+    aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="deleteBanking">Cảnh báo</h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Bạn chắc chắn muốn xóa thông tin ngân hàng này?
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal">
+            Huỷ
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            onclick="confirmDeleteBanking()">
+            Xác nhận
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  var setting = <%- JSON.stringify(setting) %>
+  let currentBanking = null
+  $(document).ready(function () {
+    renderBanking()
+
+    $('button#createBanking').on('click', async function () {
+      var body = {
+        fullname: $('#bank-fullname').val(),
+        number: $('#bank-number').val(),
+        name: $('#bank-name').val(),
+        locale: $('#bank-locale').val(),
+      }
+      var files = $('#bank-image').prop('files')
+      var url = files.length > 0 ? await uploadImage(files, 'banking') : null
+      if (url != null) {
+        body.image = url
+      }
+      updateBanking({
+        banking: [...setting?.banking, body],
+      })
+    })
+  })
+
+  function selectEditBanking(index, id) {
+    const bank = setting?.banking[index]
+    currentBanking = id
+    $('#editBanking #bank-fullname').val(bank.fullname)
+    $('#editBanking #bank-number').val(bank.number)
+    $('#editBanking #bank-name').val(bank.name)
+    $('#editBanking #bank-locale').val(bank.locale)
+    $('#editBanking').modal('show')
+  }
+  async function editBanking() {
+    let body = {
+      fullname: $('#editBanking #bank-fullname').val(),
+      name: $('#editBanking #bank-name').val(),
+      number: $('#editBanking #bank-number').val(),
+      locale: $('#editBanking #bank-locale').val(),
+    }
+    var files = $('#editBanking #bank-image').prop('files')
+    var url = files.length > 0 ? await uploadImage(files, 'banking') : null
+    if (url != null) {
+      body.image = url
+    }
+
+    let newBanking = setting?.banking
+    newBanking.forEach((banking, index) => {
+      if (banking._id == currentBanking) {
+        newBanking[index] = body
+      }
+    })
+
+    updateBanking({
+      banking: newBanking,
+    })
+  }
+
+  function deleteBanking(id) {
+    currentBanking = id
+    $('#deleteBanking').modal('show')
+  }
+
+  function confirmDeleteBanking() {
+    let newBanking = setting?.banking.filter(
+      (banking) => banking._id != currentBanking,
+    )
+    updateBanking({
+      banking: newBanking,
+    })
+  }
+
+  function renderBanking() {
+    let html = ''
+    setting?.banking.forEach((item, index) => {
+      html += `
+            <tr>
+            <th scope="row">${index + 1}</th>
+            <td><img src="${item.image}" alt="" /></>
+            <td>${item.fullname}</td>
+            <td>${item.name}</td>
+            <td>${item.number}</td>
+            <td>${item.locale}</td>
+            <td>
+                <div class="btn btn-primary" onclick="selectEditBanking('${index}', '${
+        item._id
+      }')" >Sửa</div>
+                <div class="btn btn-danger" onclick="deleteBanking('${
+                  item._id
+                }')">Xóa</div>
+            </td>
+            </tr>
+        `
+    })
+
+    $('tbody').append(html)
+  }
+
+  function updateBanking(body) {
+    $.ajax({
+      url: '/admin/setting',
+      type: 'PATCH',
+      contentType: 'application/json',
+      data: JSON.stringify(body),
+      success: function (data) {
+        if (data.status == 'ok') {
+          currentBanking = null
+          $('#createBanking').modal('hide')
+          window.location.reload()
+        } else {
+          alert('Thao tác thất bại')
+        }
+      },
+    })
+  }
+</script>

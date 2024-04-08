@@ -1,0 +1,294 @@
+<style>
+  .home-product .category {
+    width: 100%;
+    height: 100%;
+  }
+
+  .home-product .category .category-item {
+    width: 100%;
+    height: 100%;
+  }
+
+  .home-product .category-item .category-item__title {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+  .owl-carousel .owl-stage {
+    display:flex !important 
+  } 
+  .category-item .item{
+    height: 100%;
+  }
+  .home-product .category-nav {
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+  }
+  .home-product .category-nav button {
+    background-color: #00a651;
+    border: none;
+    border-radius: 10px;
+    width: auto;
+    height: auto;
+    margin: 0 5px;
+    /* padding horizontal */
+    padding: 5px 20px;
+    color: white;
+  }
+  @media screen and (max-width: 768px) {
+    .home-product .category-nav button {
+      padding: 2px 8px;
+    }
+  }
+  .home-product .owl-item .active {
+    background-color: white;
+    padding: 20px;
+    height: 100%;
+  }
+  .home-product .card-image .badge {
+    margin: 10px;
+  }
+  .home-product .card-image img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+  }
+  .home-product .category-item .btn {
+    background-color: #00a651;
+    border: none;
+    border-radius: 8px;
+    color: white;
+  }
+
+  .home-product .number {
+    background: #00a651;
+    color: white;
+    border-radius: 20%;
+    text-align: center;
+  }
+  .home-product .category-item a:hover {
+    text-decoration: underline;
+    transition: 0.3s;
+    scale: 1.03;
+  }
+  .home-product .filter .btn {
+    background-color: white;
+    border: none;
+    white-space: nowrap;
+    color: black;
+  }
+  .home-product .filter .btn:hover {
+    background-color: #00a651;
+    color: white;
+  }
+  .home-product .filter .btn .active {
+    background-color: #00a651;
+    color: white;
+  }
+  .home-product h6{
+    font-size: 0.8rem;
+  }
+  .home-product a{
+    font-size: 1rem;
+  }
+  .home-product p{
+    font-size: 1rem;
+  
+  }
+</style>
+<div class="container home-product my-4">
+  <div class="filter container my-4">
+    <div
+      class="row justify-content-center align-items-center py-2 rounded-3 gap-1" style="background-color: #fff200">
+      <div class="col-lg-4">
+        <div class="input-group">
+          <span class="input-group-text">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </span>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Tìm kiếm sản phẩm"
+            id="search"
+            aria-describedby="basic-addon1" />
+        </div>
+      </div>
+      <div class="col-lg-3">
+        <select class="form-select" aria-label="Danh mục" id="category">
+          <option value="">Loại sản phẩm</option>
+          <% categories.forEach(category => { %>
+          <option value="<%= category.slug %>">-- <%= category.name %></option>
+          <% }) %>
+        </select>
+      </div>
+      <div class="col-lg-3">
+        <select class="form-select form-control" aria-label="Giá" id="price">
+          <option value="">Giá</option>
+          <option value="0to500000">-- Dưới 500 ngàn</option>
+          <option value="500000to1000000">-- Từ 500 ngàn đến 1 triệu</option>
+          <option value="10000000to99999999">-- Trên 1 triệu</option>
+        </select>
+      </div>
+      <div class="col-lg-1">
+        <button class="btn btn-primary" onclick="search()">Tìm kiếm</button>
+      </div>
+    </div>
+  </div>
+  <div class="category"></div>
+</div>
+  <script>
+    const search = () => {
+      let search = document.querySelector('#search').value
+      let category = document.querySelector('#category').value
+      let price = document.querySelector('#price').value
+
+      let url = `${window.location.origin}/product`
+      if (search) {
+        url += `?search=${search}`
+      } else {
+        url += `?search=`
+      }
+      if (category) {
+        url += `&category=${category}`
+      }
+      if (price) {
+        url += `&price=${price}`
+      }
+      // navigate
+      window.location.href = url
+    }
+  </script>
+
+  <script>
+    let categoryContainer = document.querySelector('.home-product .category')
+    let categoriesLocal = <%- JSON.stringify(categories) %>
+    const getProductByCategory = async (category) => {
+      try {
+        const url = `${window.location.origin}/product`
+        const limit = 20
+        const res = await fetch(
+          `${url}/index?limit=${limit}&page=1&category=${category?.slug}&status=active`,
+        )
+        result = await res.json()
+        if (result.data.data?.length === 0) {
+          return []
+        } else {
+          return result.data.data
+        }
+      } catch (error) {
+        console.log(error)
+        return []
+      }
+    }
+    let categories = []
+    const init = async () => {
+      try {
+        // Sử dụng Promise.all để chờ tất cả các Promise trong mảng categories được giải quyết
+        categories = await Promise.all(
+          categoriesLocal.map((category) => getProductByCategory(category)),
+        )
+        renderProductByCategory(categories)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    init()
+
+    const renderProductByCategory = (categories) => {
+      let count = 0
+      for (let i = 0; i < categories.length; i++) {
+        const category = categories[i]
+        if (category.length === 0) {
+          continue
+        }
+        count++
+        const categoryItem = document.createElement('div')
+        categoryItem.classList.add('category-item', 'my-3')
+        categoryItem.innerHTML = `
+          <div class="category-item__title">
+            <a href="/product?category=${categoriesLocal[i].slug}"><h5><span class="number py-1 px-${count > 9 ? 1: 2} me-2">${count}</span>${categoriesLocal[i].name.toUpperCase()}</h5></a>
+            <div class="category-nav category-nav-${i}"></div>
+          </div>
+          <div class="category-item__products owl-carousel-${i} owl-carousel mt-2"></div>
+          `
+
+        const owlCarousel = categoryItem.querySelector(`.owl-carousel-${i}`)
+        category.forEach((product) => {
+          const item = document.createElement('div')
+          item.classList.add('item', 'bg-white', 'px-2', 'border', 'border-0')
+          /*
+          badge new
+                 <span class="badge bg-danger position-absolute top-0 end-0"
+                  >New <i class="fa-solid fa-certificate"></i
+                ></span>
+          */
+          let html = `
+            <div class="card rounded-4" style="width: 100%; height: 100%;">
+              <a title="${product.name}" href="/product/${product.slug}" class="card-image">
+                <img
+                  src="${product.images[0]}"
+                  class="card-img-top rounded-4 p-2"
+                  alt="${product.name}" />
+              </a>
+              <div class="card-body d-flex flex-column">
+                <a title="${product.name}" class="card-title flex-grow-1 fs-6" href="/product/${product.slug}"><h6>${product.name}</h6></a>
+                <div class="card-text">`
+          if (product.discount > 0) {
+            html += `<div class="d-flex justify-content-between">
+                    <p class="text-decoration-line-through p-0 m-0">${product.price.toLocaleString(
+                      'vi',
+                    )}đ</p>
+                   <span class="badge text-bg-danger h-auto">${product.discount}% GIẢM</span>
+                  </div>`
+          }
+          html +=`<p class="p-0 m-0">${(product.price - (product.price * product.discount /100)).toLocaleString('vi')}đ</p>
+                    </div>
+                    <div class="card-footer d-flex justify-content-between bg-white px-0 pb-0">
+                      <p class="m-0 p-0"></p>
+                      <a title="${product.name}" href="/product/${product.slug}" class="btn py-1 px-2 m-0"><p class="m-0 p-0 ">Xem chi tiết</p></a>
+                    </div>
+                  </div>
+                </div>
+                `
+          item.innerHTML = html
+          owlCarousel.appendChild(item)
+        })
+        // add script
+        const script = document.createElement('script')
+        script.innerHTML = `
+            $(document).ready(function () {
+              $('.owl-carousel-${i}').owlCarousel({
+              rewind: true,
+              autoplay: true,
+              autoplayTimeout: 3000,
+              smartSpeed: 500,
+              navContainer: '.category-nav-${i}',
+              navText: ['<<', '>>'],
+              responsive: {
+                0: {
+                  items: 1,
+                },
+                600: {
+                  items: 2,
+                },
+                900: {
+                  items: 3,
+                },
+                1000: {
+                  items: 4,
+                },
+                1200: {
+                  items: 5,
+                },
+              },
+              })
+            })`
+        categoryItem.appendChild(script)
+        categoryContainer.appendChild(categoryItem)
+        
+      }
+    }
+  </script>
+</div>

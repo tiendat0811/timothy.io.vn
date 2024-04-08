@@ -1,0 +1,239 @@
+<style>
+  .policy-container p {
+    font-size: 16px;
+  }
+  .tool-banking {
+    padding: 0;
+  }
+  .tool-banking img {
+    width: 200px;
+    height: 100px;
+    object-fit: contain;
+  }
+
+  @media (max-width: 500px) {
+    .tool-banking img {
+      width: 40px;
+      height: 40px;
+      align-self: center;
+      border-radius: 50%;
+    }
+  }
+  .tool-banking .description .text,
+  .content {
+    font-size: 16px;
+  }
+</style>
+<div class="container policy-container my-3">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+      <li class="breadcrumb-item active">Quy định & Chính sách</li>
+    </ol>
+  </nav>
+  <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link"
+        id="payment-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#phuong-thuc-thanh-toan"
+        type="button"
+        role="tab"
+        aria-controls="phuong-thuc-thanh-toan"
+        name="phuong-thuc-thanh-toan"
+        aria-selected="false">
+        <span class="d-lg-block d-none"> Phương thức thanh toán </span>
+        <span class="d-lg-none d-block"> Thanh toán </span>
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link"
+        id="shipping-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#phuong-thuc-van-chuyen"
+        type="button"
+        role="tab"
+        aria-controls="phuong-thuc-van-chuyen"
+        name="phuong-thuc-van-chuyen"
+        aria-selected="false">
+        <span class="d-lg-block d-none"> Phương thức vận chuyển </span>
+        <span class="d-lg-none d-block"> Vận chuyển </span>
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link"
+        id="warranty"
+        data-bs-toggle="tab"
+        data-bs-target="#chinh-sach-bao-hanh"
+        type="button"
+        role="tab"
+        name="chinh-sach-bao-hanh"
+        aria-controls="chinh-sach-bao-hanh"
+        aria-selected="false">
+        <span class="d-lg-block d-none"> Chính sách bảo hành </span>
+        <span class="d-lg-none d-block"> Bảo hành </span>
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link"
+        id="returning"
+        data-bs-toggle="tab"
+        data-bs-target="#chinh-sach-doi-tra"
+        type="button"
+        role="tab"
+        name="chinh-sach-doi-tra"
+        aria-controls="chinh-sach-doi-tra"
+        aria-selected="false">
+        <span class="d-lg-block d-none"> Chính sách đổi trả và hoàn tiền </span>
+        <span class="d-lg-none d-block"> Đổi/trả - Hoàn tiền </span>
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link"
+        id="security"
+        data-bs-toggle="tab"
+        data-bs-target="#chinh-sach-bao-mat"
+        type="button"
+        role="tab"
+        name="chinh-sach-bao-mat"
+        aria-controls="chinh-sach-bao-mat"
+        aria-selected="false">
+        <span class="d-lg-block d-none"> Chính sách bảo mật </span>
+        <span class="d-lg-none d-block"> Bảo mật </span>
+      </button>
+    </li>
+  </ul>
+  <div class="tab-content" id="myTabContent">
+    <div
+      class="tab-pane fade bg-white border p-3 border-1"
+      id="phuong-thuc-thanh-toan"
+      role="tabpanel"
+      aria-labelledby="payment-tab"
+      tabindex="0">
+      <div id="policy-payment"></div>
+      <div id="policy-banking" class="tool-banking mt-1">
+        <table class="table table-borderless w-auto p-0">
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+    <div
+      class="tab-pane fade bg-white border p-3 border-1"
+      id="phuong-thuc-van-chuyen"
+      role="tabpanel"
+      aria-labelledby="shipping-tab"
+      tabindex="0">
+      <div id="policy-shipping"></div>
+    </div>
+    <div
+      class="tab-pane fade bg-white border p-3 border-1"
+      id="chinh-sach-bao-hanh"
+      role="tabpanel"
+      aria-labelledby="warranty-tab"
+      tabindex="0">
+      <div id="policy-warranty"></div>
+    </div>
+    <div
+      class="tab-pane fade bg-white border p-3 border-1"
+      id="chinh-sach-doi-tra"
+      role="tabpanel"
+      aria-labelledby="returning-tab"
+      tabindex="0">
+      <div id="policy-returning"></div>
+    </div>
+    <div
+      class="tab-pane fade bg-white border p-3 border-1"
+      id="chinh-sach-bao-mat"
+      role="tabpanel"
+      aria-labelledby="security-tab"
+      tabindex="0">
+      <div id="policy-security"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+    var setting = <%- JSON.stringify(setting) %>
+    let payment = new Quill('#policy-payment', {
+      readOnly: true,
+    })
+    let shipping = new Quill('#policy-shipping', {
+      readOnly: true,
+    })
+    let warranty = new Quill('#policy-warranty', {
+      readOnly: true,
+    })
+    let returning = new Quill('#policy-returning', {
+      readOnly: true,
+    })
+    let security = new Quill('#policy-security', {
+      readOnly: true,
+    })
+    payment.setContents(setting.payment)
+    shipping.setContents(setting.shipping)
+    warranty.setContents(setting.warranty)
+    returning.setContents(setting.returning)
+    security.setContents(setting.security)
+    //render banking
+    let banking = $('#policy-banking table tbody')
+    banking.empty()
+    setting.banking.map((item) => {
+      banking.append(`
+          <tr class="p-0">
+              <td class="p-0 align-middle d-none d-lg-block"><img src="${item.image}" alt="" /></td>
+              <td class="description p-0 align-middle">
+                <table class="table table-striped table-bordered w-auto">
+                  <tbody>
+                    <tr>
+                      <td>Ngân hàng</td>
+                      <td>${item.name}</td>
+                    </tr>
+                    <tr>
+                      <td>Tên tài khoản</td>
+                      <td>${item.fullname}</td>
+                    </tr>
+                    <tr>
+                      <td>Số tài khoản</td>
+                      <td>${item.number}</td>
+                    </tr>
+                    <tr>
+                      <td>Chi nhánh</td>
+                      <td>${item.locale}</td>
+                    </tr>
+                  </tbody>
+                <table>
+              </td>
+            </tr>
+        `)
+    })
+
+  document.addEventListener("DOMContentLoaded", function () {
+    var currentUrl = window.location.href;
+    // lấy đuôi url
+    let currentDes = currentUrl.split("/").pop();
+    var tabLinks = document.querySelectorAll("#myTab .nav-link");
+    var tabPanes = document.querySelectorAll("#myTabContent div.tab-pane");
+    if (currentDes === "policy") {
+      currentDes = "phuong-thuc-thanh-toan";
+    }
+    tabLinks.forEach(function (item) {
+      if (currentDes === item.name) {
+        item.classList.add("active");
+        item["aria-selected"] = true;
+      }
+    });
+
+    tabPanes.forEach(function (item) {
+      console.log(item.id)
+      if (currentDes === item.id) {
+        item.classList.add("active");
+        item.classList.add("show");
+      }
+    });
+  });
+</script>

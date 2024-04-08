@@ -1,0 +1,327 @@
+<style>
+  .setting-container .logo {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+  }
+
+  .setting-container .social-logo {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+</style>
+<div class="setting-container">
+  <h1>Cài đặt chung</h1>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="d-flex justify-content-between">
+        <h4>Thông tin chung</h4>
+        <button class="btn btn-primary" onclick="updateGeneral()">
+          <i class="fa-solid fa-floppy-disk pe-1"></i>
+          Lưu
+        </button>
+      </div>
+      <div class="mb-3">
+        <label for="address" class="form-label">Địa chỉ</label>
+        <input
+          type="text"
+          class="form-control"
+          id="address"
+          name="address"
+          placeholder=""
+          value="<%- setting?.contact.address %>" />
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input
+          type="email"
+          class="form-control"
+          id="email"
+          name="email"
+          placeholder=""
+          value="<%- setting?.contact.email %>" />
+      </div>
+      <div class="mb-3">
+        <label for="phone" class="form-label">Số điện thoại (+84):</label>
+        <input
+          type="text"
+          class="form-control"
+          id="phone"
+          name="phone"
+          value="<%- setting?.contact.phone %>" />
+      </div>
+      <div class="mb-3">
+        <label for="logo" class="form-label">Logo</label>
+        <input
+          type="file"
+          class="form-control"
+          id="logo"
+          placeholder=""
+          value="<%- setting?.contact.phone %>"
+          accept="image/png, image/jpg, image/jpeg" />
+        <img class="logo" src="<%- setting?.logo %>" alt="" />
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="d-flex justify-content-between">
+        <h4>Liên lạc qua Mạng xã hội</h4>
+        <div>
+          <div
+            class="btn btn-primary me-1"
+            data-bs-toggle="modal"
+            data-bs-target="#createSocial">
+            <i class="fa-sharp fa-solid fa-plus pe-1"></i>
+            Thêm mới
+          </div>
+          <button class="btn btn-primary" onclick="updateSocial()">
+            <i class="fa-solid fa-floppy-disk pe-1"></i>
+            Lưu
+          </button>
+        </div>
+      </div>
+      <% setting?.social?.forEach((item, index)=>{ %>
+      <hr />
+      <div class="social-data">
+        <div class="mb-3">
+          <label for="social-name" class="form-label">Tên</label>
+          <input
+            type="text"
+            class="form-control"
+            id="social-name"
+            placeholder=""
+            value="<%= item.name %>" />
+        </div>
+        <div class="mb-3">
+          <label for="social-link" class="form-label">Link</label>
+          <input
+            type="text"
+            class="form-control"
+            id="social-link"
+            placeholder=""
+            value="<%= item.link %>" />
+        </div>
+        <div class="mb-3">
+          <label for="social-image" class="form-label"
+            >Logo <%= item.name %></label
+          >
+          <input
+            type="file"
+            class="form-control"
+            id="social-image"
+            accept="image/png, image/jpg, image/jpeg" />
+        </div>
+        <div class="d-flex justify-content-between">
+          <img src="<%= item.image%>" alt="" class="social-logo" />
+          <div>
+            <a
+              class="btn btn-danger"
+              onclick="setDeleteSocial('<%= item.name %>')">
+              <i class="fa-sharp fa-solid fa-trash pe-1"></i>
+              Xoá liên kết
+            </a>
+          </div>
+        </div>
+      </div>
+      <% }) %>
+    </div>
+  </div>
+</div>
+
+<!-- modal create -->
+<div
+  class="modal fade"
+  id="createSocial"
+  tabindex="-1"
+  aria-labelledby="createSocial"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <form id="create-social">
+        <div class="modal-header d-flex justify-content-between">
+          <h1 class="modal-title fs-5" id="createSocial">
+            Tạo liên kết mạng xã hội mới
+          </h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="social-name-new" class="form-label">Tên</label>
+            <input
+              type="text"
+              class="form-control"
+              id="social-name-new"
+              placeholder=""
+              value="" />
+          </div>
+          <div class="mb-3">
+            <label for="social-link-new" class="form-label">Link</label>
+            <input
+              type="text"
+              class="form-control"
+              id="social-link-new"
+              placeholder=""
+              value="" />
+          </div>
+          <div class="mb-3">
+            <label for="social-image-new" class="form-label">Ảnh</label>
+            <input
+              type="file"
+              class="form-control"
+              id="social-image-new"
+              accept="image/png, image/jpg, image/jpeg" />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal">
+            Huỷ
+          </button>
+          <button type="submit" class="btn btn-primary">Xác nhận</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- modal delete -->
+<div
+  class="modal fade"
+  id="deleteSocial"
+  tabindex="-1"
+  aria-labelledby="deleteSocial"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="deleteSocial">Cảnh báo</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Bạn chắc chắn muốn xóa liên kết mạng xã hội này?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Huỷ
+        </button>
+        <button type="button" class="btn btn-primary" onclick="deleteSocial()">
+          Xác nhận
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  var setting = <%- JSON.stringify(setting) %>
+  let currentSocial = null
+  // general
+  async function updateGeneral() {
+    // Retrieve the form data
+    var address = document.getElementById('address').value
+    var email = document.getElementById('email').value
+    var phone = document.getElementById('phone').value
+    var logo = document.getElementById('logo').files
+    var newLogo = logo.length > 0 ? await uploadImage(logo, 'logo') : null
+    let body = {
+      contact: {
+        address: address,
+        email: email,
+        phone: phone,
+      },
+    }
+    if (newLogo) {
+      body.logo = newLogo
+    }
+    updateSetting(body)
+  }
+
+  // social
+  // update
+  async function updateSocial() {
+    var social = []
+    var socials = document.querySelectorAll('.social-data')
+    for (let i = 0; i < socials.length; i++) {
+      var name = socials[i].querySelector('#social-name').value
+      var link = socials[i].querySelector('#social-link').value
+      var image = socials[i].querySelector('#social-image').files
+      var newImage =
+        image.length > 0 ? await uploadImage(image, 'social') : null
+      var data = {
+        ...setting?.social[i],
+        name: name,
+        link: link,
+      }
+      if (newImage) {
+        data.image = newImage
+      }
+      social.push(data)
+    }
+    updateSetting({
+      social: social,
+    })
+  }
+
+  // create
+  document
+    .getElementById('create-social')
+    .addEventListener('submit', async function (event) {
+      event.preventDefault() // Prevent the default form submission
+
+      // Retrieve the form data
+      var name = document.getElementById('social-name-new').value
+      var link = document.getElementById('social-link-new').value
+      var image = document.getElementById('social-image-new').files
+      var newImage =
+        image.length > 0 ? await uploadImage(image, 'social') : null
+      updateSetting({
+        social: [
+          ...setting?.social,
+          {
+            name: name,
+            link: link,
+            image: newImage || null,
+          },
+        ],
+      })
+    })
+
+  function setDeleteSocial(name) {
+    currentSocial = name
+    $('#deleteSocial').modal('show')
+  }
+
+  function deleteSocial() {
+    updateSetting({
+      social: setting?.social.filter((item) => item.name != currentSocial),
+    })
+  }
+
+  function updateSetting(body) {
+    $.ajax({
+      url: '/admin/setting',
+      type: 'PATCH',
+      contentType: 'application/json',
+      data: JSON.stringify(body),
+      success: function (data) {
+        if (data.status == 'ok') {
+          // hide modal
+          $('#createSocial').modal('hide')
+          window.location.reload()
+        } else {
+          alert('Cập nhật thất bại')
+        }
+      },
+    })
+  }
+</script>

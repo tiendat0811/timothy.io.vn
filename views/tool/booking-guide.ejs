@@ -1,0 +1,25 @@
+<style>
+  .page-booking-guide {
+    margin-top: 20px;
+    padding: 20px;
+  }
+</style>
+<div class="container" class="page-booking-guide">
+  <h1>Hướng dẫn đặt vé</h1>
+  <div id="page-booking-guide"></div>
+</div>
+
+<script>
+  let quillBookingGuide = new Quill('#page-booking-guide', {
+    readOnly: true,
+  })
+
+  //call api
+  fetch(
+    `${window.location.origin}/post/index?limit=1&page=1&category=booking-guide`,
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      quillBookingGuide.setContents(data.data.data[0]?.description)
+    })
+</script>

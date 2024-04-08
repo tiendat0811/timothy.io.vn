@@ -1,0 +1,364 @@
+<style>
+  .setting-category .filter {
+    width: fit-content;
+    margin-bottom: 20px;
+    display: flex;
+  }
+  .setting-category label {
+    /* 1 line */
+    white-space: nowrap;
+    align-self: center;
+    margin-right: 5px;
+  }
+  .setting-category .admin-category td.description {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 300px;
+  }
+  .setting-category .modal-content {
+    min-width: 70%;
+  }
+</style>
+<div class="container-fluid setting-category">
+  <div class="d-flex justify-content-between">
+    <h4>Quản lý danh mục</h4>
+    <button
+      type="button"
+      class="btn btn-primary mb-3"
+      data-bs-toggle="modal"
+      data-bs-target="#createCategoryModal">
+      Thêm danh mục
+    </button>
+  </div>
+
+  <table class="table admin-category">
+    <thead>
+      <tr>
+        <th scope="col">TT</th>
+        <th scope="col">Tên danh mục</th>
+        <th scope="col">Mã danh mục</th>
+        <th scope="col">Mô tả</th>
+        <th scope="col">Keywords</th>
+        <th scope="col">Thao tác</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <!-- modal create -->
+  <div
+    class="modal fade"
+    id="createCategoryModal"
+    tabindex="-1"
+    aria-labelledby="createCategoryModal"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header d-flex justify-content-between">
+          <h1 class="modal-title fs-5" id="createCategoryModal">
+            Tạo danh mục
+          </h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="name" class="form-label">Tên danh mục</label>
+              <input
+                type="text"
+                class="form-control"
+                id="name"
+                placeholder="Nhập tên danh mục" />
+            </div>
+            <div class="mb-3">
+              <label for="slug" class="form-label">Mã danh mục</label>
+              <input
+                type="text"
+                class="form-control"
+                id="slug"
+                placeholder="Nhập mã danh mục" />
+            </div>
+            <div class="mb-3">
+              <label for="description" class="form-label">Mô tả</label>
+              <textarea
+                class="form-control"
+                id="description"
+                placeholder="Nhập mô tả"></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="keywords" class="form-label">Keywords</label>
+              <textarea
+                class="form-control"
+                id="keywords"
+                placeholder="Nhập keywords"></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal">
+            Huỷ
+          </button>
+          <button type="button" class="btn btn-primary">Xác nhận</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- modal delete -->
+  <div
+    class="modal fade"
+    id="deletecategoryModal"
+    tabindex="-1"
+    aria-labelledby="deletecategoryModal"
+    aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="deletecategoryModal">Cảnh báo</h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"></button>
+        </div>
+        <div class="modal-body">Bạn chắc chắn muốn xóa danh mục này?</div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal">
+            Huỷ
+          </button>
+          <button type="button" class="btn btn-primary">Xác nhận</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- modal edit -->
+
+  <div
+    class="modal fade"
+    id="editCategoryModal"
+    tabindex="-1"
+    aria-labelledby="editCategoryModal"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header d-flex justify-content-between">
+          <h1 class="modal-title fs-5" id="editCategoryModal">Sửa danh mục</h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="name" class="form-label">Tên danh mục</label>
+              <input
+                type="text"
+                class="form-control"
+                id="name"
+                placeholder="Nhập tên danh mục" />
+            </div>
+            <div class="mb-3">
+              <label for="slug" class="form-label">Mã danh mục</label>
+              <input
+                type="text"
+                class="form-control"
+                id="slug"
+                placeholder="Nhập mã danh mục" />
+            </div>
+            <div class="mb-3">
+              <label for="description" class="form-label">Mô tả</label>
+              <textarea
+                class="form-control"
+                id="description"
+                placeholder="Nhập mô tả"></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="keywords" class="form-label">Keywords</label>
+              <textarea
+                class="form-control"
+                id="keywords"
+                placeholder="Nhập keywords"></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal">
+            Huỷ
+          </button>
+          <button type="button" class="btn btn-primary">Xác nhận</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  const categoryTbody = document.querySelector('.admin-category tbody')
+  let listCategory = []
+  let currentcategory = null
+  const render = (category) => {
+    let html = ''
+    category.forEach((category, index) => {
+      html += `
+            <tr>
+            <th scope="row">${index + 1}</th>
+            <td>${category.name}</td>
+            <td>${category.slug}</td>
+            <td class="description">${category.description}</td>
+            <td class="description">${category.keywords}</td>
+            <td>
+                <div class="btn btn-primary" onclick="editcategory('${index}', '${
+        category._id
+      }')">Sửa</div>
+                <div class="btn btn-danger" onclick="deletecategory('${
+                  category._id
+                }')">Xóa</div>
+            </td>
+            </tr>
+        `
+    })
+    categoryTbody.innerHTML = html
+  }
+
+  const getcategory = async () => {
+    const url = `${window.location.origin}/category`
+    const limit = 10
+    try {
+      const res = await fetch(`${url}`)
+      const data = await res.json()
+      listCategory = data.data
+      render(data.data)
+      return data
+    } catch (error) {
+      console.log(error)
+    }
+    return data
+  }
+
+  const deletecategory = async (id) => {
+    currentcategory = id
+    $('#deletecategoryModal').modal('show')
+  }
+
+  const editcategory = (index, id) => {
+    currentcategory = id
+    //fill category data to modal from index
+    const categoryData = listCategory[index]
+    $('#editCategoryModal #name').val(categoryData.name)
+    $('#editCategoryModal #slug').val(categoryData.slug)
+    $('#editCategoryModal #description').val(categoryData.description)
+    $('#editCategoryModal #keywords').val(categoryData.keywords)
+    $('#editCategoryModal').modal('show')
+  }
+
+  const init = async () => {
+    const res = await getcategory()
+  }
+  init()
+
+  $(document).ready(function () {
+    // delete
+    $('#deletecategoryModal').on('hidden.bs.modal', function (e) {
+      currentcategory = null
+    })
+
+    $('#deletecategoryModal .btn-primary').click(async function () {
+      try {
+        const res = await fetch(
+          `${window.location.origin}/category/${currentcategory}`,
+          {
+            method: 'DELETE',
+          },
+        )
+        const data = await res.json()
+
+        if (data.status === 'ok') {
+          $('#deletecategoryModal').modal('hide')
+          init()
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    })
+
+    // create
+    $('#createCategoryModal').on('hidden.bs.modal', function (e) {
+      currentcategory = null
+    })
+
+    $('#createCategoryModal .btn-primary').click(async function () {
+      const body = {
+        name: $('#createCategoryModal #name').val(),
+        slug: $('#createCategoryModal #slug').val(),
+        description: $('#createCategoryModal #description').val(),
+        keywords: $('#createCategoryModal #keywords').val(),
+      }
+      try {
+        const res = await fetch(`${window.location.origin}/category`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body),
+        })
+        const data = await res.json()
+        if (data.status === 'ok') {
+          $('#createCategoryModal').modal('hide')
+          init()
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    })
+
+    // edit
+    $('#editCategoryModal').on('hidden.bs.modal', function (e) {
+      currentcategory = null
+    })
+
+    $('#editCategoryModal .btn-primary').click(async function () {
+      try {
+        const body = {
+          name: $('#editCategoryModal #name').val(),
+          slug: $('#editCategoryModal #slug').val(),
+          description: $('#editCategoryModal #description').val(),
+          keywords: $('#editCategoryModal #keywords').val(),
+        }
+        const res = await fetch(
+          `${window.location.origin}/category/${currentcategory}`,
+          {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body),
+          },
+        )
+        const data = await res.json()
+
+        if (data.status === 'ok') {
+          $('#editCategoryModal').modal('hide')
+          init()
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    })
+  })
+</script>

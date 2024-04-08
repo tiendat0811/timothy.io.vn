@@ -1,0 +1,96 @@
+<style>
+  footer .container-fluid {
+    background-color: #fff200;
+    padding: 20px 0;
+  }
+  footer .certificate {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  footer .certificate img {
+    height: 50px;
+    margin: 0 10px;
+  }
+
+  li {
+    list-style: none;
+  }
+
+  a {
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+  }
+
+  footer a:hover {
+    color: #003c96;
+  }
+
+  .footer-link {
+  }
+</style>
+
+<footer>
+  <div class="container-fluid p-0">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 pt-4 ps-5">
+          <!-- <h4>Liên kết hữu ích</h4>
+          <div>
+            <a class="footer-link" href="/policy/phuong-thuc-thanh-toan"
+              >Phương thức thanh toán</a
+            ><br />
+            <a class="footer-link" href="/policy/phuong-thuc-van-chuyen"
+              >Phương thức vận chuyển</a
+            ><br />
+            <a class="footer-link" href="/policy/chinh-sach-bao-hanh"
+              >Chính sách bảo hành</a
+            ><br />
+            <a class="footer-link" href="/policy/chinh-sach-doi-tra"
+              >Chính sách đổi/trả hàng và hoàn tiền</a
+            ><br />
+            <a class="footer-link" href="/policy/chinh-sach-bao-mat"
+              >Chính sách bảo mật thông tin</a  
+            >
+          </div> -->
+        </div>
+        <div class="col-md-6 pt-4">
+          <!-- <h4>Thông tin liên hệ</h4>
+          <p>
+            Địa chỉ: <%= setting?.contact.address %><br />
+            Liên hệ chúng tôi: <br />
+            Kênh đại lý: 0938.925.533 Mr Hải <br />
+            Kênh dự án: 0979.576.242 Mr Hà <br />
+            Zalo: 0964 090 616 <br />Email: <%= setting?.contact.email %>
+            <br />
+            Facebook:
+            <a href="https://www.facebook.com/fslvietnam.vn">FSL Vietnam</a>
+            <br />
+            Website:
+            <a title="fsl-vietnam.com" href="https://fsl-vietnam.com"
+              >fsl-vietnam.com</a
+            >
+          </p>
+          <p>
+            CÔNG TY CỔ PHẦN THIẾT BỊ ĐIỆN AN PHÁT SÀI GÒN <br />
+            Giấy chứng nhận kinh doanh số 0316127482 do Sở Kế Hoạch và Đầu tư
+            Thành Phố Hồ Chí Minh cấp ngày 03/02/2020
+          </p> -->
+        </div>
+      </div>
+      <!-- <div class="certificate">
+        <img src="/static/images/bocongthuong.png" alt="" />
+        <img src="/static/images/bocongthuong2.png" alt="" />
+      </div> -->
+      <hr />
+      <p class="text-center p-0 py-2 m-0">
+        &copy; 2023 Pham Tien Dat. All rights reserved. | Contact:
+        phamtiendat.dev@gmail.com | Phone: +84 903 684 049
+      </p>
+    </div>
+  </div>
+</footer>
+<%- include('./contact.ejs') %>

@@ -1,0 +1,57 @@
+<div class="container-fluid setting-warranty">
+  <div class="d-flex align-items-center justify-content-between">
+    <div class="d-flex gap-3 align-items-center">
+      <h4>Chính sách bảo hành</h4>
+    </div>
+    <button
+      class="btn btn-primary disabled"
+      onclick="save()"
+      id="save-warranty">
+      <i class="fa-solid fa-floppy-disk pe-1"></i>
+      Lưu
+    </button>
+  </div>
+  <div class="mt-3">
+    <div id="setting-warranty"></div>
+  </div>
+</div>
+<script>
+  var content = <%- JSON.stringify(setting.warranty) %>
+  var toolbarOptions = [
+    [{ header: [1, 2, 3, 4, 5, 6, false] }],
+    ['bold', 'italic', 'underline', 'strike'], // toggled buttons
+    [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+    [{ font: [] }],
+    [{ align: [] }],
+    [{ list: 'ordered' }, { list: 'bullet' }],
+    ['link', 'image'],
+  ]
+  var quill = new Quill('#setting-warranty', {
+    modules: {
+      toolbar: toolbarOptions,
+    },
+    theme: 'snow',
+  })
+  quill.setContents(content)
+  quill.on('text-change', function () {
+    $('#save-warranty').removeClass('disabled')
+  })
+  function save() {
+    if ($('#save-warranty').hasClass('disabled')) return
+    var warranty = quill.getContents()?.ops
+    $.ajax({
+      url: '/admin/setting',
+      type: 'PATCH',
+      contentType: 'application/json',
+      data: JSON.stringify({ warranty: warranty }),
+      success: function (data) {
+        if (data.status == 'ok') {
+          $('#save-warranty').addClass('disabled')
+          alert('Thao tác thành công')
+        } else {
+          alert('Thao tác thất bại')
+        }
+      },
+    })
+  }
+</script>

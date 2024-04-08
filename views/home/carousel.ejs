@@ -1,0 +1,101 @@
+<style>
+  .carousel {
+    height: 100%;
+  }
+
+  .carousel-inner {
+    height: 100%;
+  }
+
+  .carousel-item {
+    height: 100%;
+  }
+
+  .carousel img {
+    background-color: #fff;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: brightness(100%);
+  }
+
+  @media screen and (min-width: 992px) {
+    .carousel img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* Set the initial state to cover */
+      filter: brightness(100%);
+      transition: transform 1s;
+    }
+
+    .carousel .image-wrapper {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .carousel img:hover {
+      background-color: #dbdbdb;
+      object-fit: contain;
+    }
+  }
+
+  .carousel-control-prev,
+  .carousel-control-next {
+    z-index: 2;
+  }
+</style>
+<div id="carousel-ad" class="carousel slide" data-ride="carousel">
+  <div class="carousel-indicators">
+    <% setting?.slider?.sort((a, b) => a.position - b.position).forEach((slide, index) => { %>
+    <button
+      type="button"
+      data-bs-target="#carousel-ad"
+      data-bs-slide-to="<%= index %>"
+      <% if (index === 0) { %>class="active"<% } %>
+      aria-label="Slide <%= index + 1 %>"></button>
+    <% }) %>
+  </div>
+  <div class="carousel-inner">
+    <% setting?.slider?.sort((a, b) => a.position - b.position).forEach((slide, index) => { %>
+    <div class="carousel-item <% if (index === 0) { %>active<% } %>">
+      <a href="<%= slide.link %>">
+        <div class="image-wrapper">
+          <img
+            src="<%= slide.image %>"
+            class="d-block img-fluid mx-auto"
+            alt="slide <%= index + 1 %>" />
+        </div>
+      </a>
+    </div>
+    <% }) %>
+  </div>
+  <button
+    class="carousel-control-prev"
+    type="button"
+    data-bs-target="#carousel-ad"
+    data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button
+    class="carousel-control-next"
+    type="button"
+    data-bs-target="#carousel-ad"
+    data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+
+<script>
+  $(document).ready(function () {
+    // Start the carousel
+    $('#carousel-ad').carousel()
+
+    // Auto advance to the next slide every 2 seconds
+    setInterval(function () {
+      $('#carousel').carousel('next')
+    }, 2000)
+  })
+</script>

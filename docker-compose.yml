@@ -1,0 +1,14 @@
+version: '2.19.1'
+services:
+  paullight:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    network_mode: myvps
+    ports:
+      - "3100:3100"
+    expose:
+      - "3100"
+    restart: always
+
+

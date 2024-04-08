@@ -1,0 +1,30 @@
+<style>
+  .page-about {
+    margin-top: 20px;
+    padding: 20px;
+  }
+  #page-about p {
+    font-size: 16px;
+  }
+  h1 {
+    font-size: 24px;
+  }
+</style>
+<div class="container" class="page-about">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+      <li class="breadcrumb-item active">Giới thiệu</li>
+    </ol>
+  </nav>
+  <h1 class="text-center">FSL Việt nam - LIGHT UP THE WORLD - ĐÈN LED FSL</h1>
+  <div id="page-about"></div>
+</div>
+
+<script>
+  let quillAbout = new Quill('#page-about', {
+    readOnly: true,
+  })
+  var setting = <%- JSON.stringify(setting) %>
+  quillAbout.setContents(setting.about)
+</script>
