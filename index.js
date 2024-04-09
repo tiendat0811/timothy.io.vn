@@ -46,11 +46,12 @@ const users = require('./models/user')
 const setting = require('./models/setting')
 const post = require('./models/post')
 const category = require('./models/category')
+const log = require('./models/log')
 
 // Kết nối đến cơ sở dữ liệu MongoDB
 console.log('process.env.MONGODB_URI', process.env.MONGODB_URI)
-// const uri = process.env.MONGODB_URI || 'mongodb://timothypham:vnbaytimothy081101@mongodb:27017/paul?authSource=admin';
-const uri = process.env.MONGODB_URI || 'mongodb://timothypham:vnbaytimothy081101@14.225.210.233/timothy-io-vn?authSource=admin';
+const uri = process.env.MONGODB_URI || 'mongodb://timothypham:vnbaytimothy081101@mongodb:27017/timothy-io-vn?authSource=admin';
+// const uri = process.env.MONGODB_URI || 'mongodb://timothypham:vnbaytimothy081101@localhost:27017/timothy-io-vn?authSource=admin';
 mongoose.connect(uri, {
     useNewUrlParser: true,
     useUnifiedTopology: true

@@ -1,3 +1,4 @@
+const Log = require('../models/log');
 exports.salary = async (req, res) => {
     try {
         const { msnv, time } = req.query;
@@ -6,6 +7,9 @@ exports.salary = async (req, res) => {
             method: 'GET',
         });
         const data = await result.json();
+        if (data.length > 0) {
+            addLog(msnv, 'salary');
+        }
         res.status(200).json(data);
     } catch (e) {
         res.status(500).json({ message: e.message });
@@ -20,6 +24,9 @@ exports.revenue = async (req, res) => {
             method: 'GET',
         });
         const data = await result.json();
+        if (data.length > 0) {
+            addLog(msnv, 'revenue');
+        }
         res.status(200).json(data);
     } catch (e) {
         res.status(500).json({ message: e.message });
@@ -34,8 +41,44 @@ exports.infostaff = async (req, res) => {
             method: 'GET',
         });
         const data = await result.json();
+        if (data.length > 0) {
+            addLog(msnv, 'infostaff');
+        }
         res.status(200).json(data);
     } catch (e) {
         res.status(500).json({ message: e.message });
+    }
+}
+
+const addLog = (msnv, type) => {
+    try {
+        Log.findOne({ msnv: msnv }).then((log) => {
+            if (log != null) {
+                log.count = log.count + 1;
+                log.actions.push({
+                    action: type,
+                    time: new Date().toISOString()
+                });
+                log.updatedAt = new Date().toISOString();
+                log.save();
+            } else {
+                const newLog = new Log({
+                    msnv: msnv,
+                    count: 1,
+                    actions: [
+                        {
+                            action: type,
+                            time: new Date().toISOString()
+                        }
+                    ],
+                    createdDate: new Date().toISOString(),
+                    createdAt: new Date().getTime(),
+                    updatedAt: new Date().toISOString()
+                });
+                newLog.save();
+            }
+        });
+    } catch (error) {
+        console.log("[ERROR] addLog: ", error)
     }
 }
